@@ -1,462 +1,1246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>WebConnect SA – pay‑as‑you‑go WhatsApp website</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SiteFlow USA – Pay As You Go Web + WhatsApp Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
-  /* ----- same root, noise, nav, hero, ticker, sections as before (keep everything identical) ----- */
-  :root {
-    --green: #25D366;
-    --green-dark: #128C7E;
-    --green-light: #dcfce7;
-    --gold: #F5A623;
-    --gold-dark: #d4891a;
-    --charcoal: #1a1a2e;
-    --charcoal2: #16213e;
-    --navy: #0f3460;
-    --white: #ffffff;
-    --off: #f8fffe;
-    --muted: #64748b;
-    --card-bg: rgba(255,255,255,0.04);
-    --border: rgba(37,211,102,0.18);
-  }
+:root {
+  --blue: #2563EB;
+  --blue-light: #3B82F6;
+  --blue-glow: rgba(37,99,235,.35);
+  --cyan: #06B6D4;
+  --cyan-glow: rgba(6,182,212,.3);
+  --green: #10B981;
+  --green-wa: #25D366;
+  --amber: #F59E0B;
+  --red: #EF4444;
+  --ink: #020617;
+  --ink2: #0F172A;
+  --ink3: #1E293B;
+  --slate: #334155;
+  --muted: #64748B;
+  --dim: rgba(255,255,255,.55);
+  --faint: rgba(255,255,255,.08);
+  --border: rgba(99,179,237,.15);
+  --white: #ffffff;
+  --card: rgba(15,23,42,.7);
+}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Cabinet Grotesk',sans-serif;
+  background:var(--ink);
+  color:var(--white);
+  overflow-x:hidden;
+}
 
-  html { scroll-behavior: smooth; }
+/* GRID TEXTURE */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(37,99,235,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(37,99,235,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  pointer-events:none;z-index:0;
+}
 
-  body {
-    font-family: 'Sora', sans-serif;
-    background: var(--charcoal);
-    color: var(--white);
-    overflow-x: hidden;
-    cursor: default;
-  }
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 3rem;
+  background:rgba(2,6,23,.8);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:padding .3s;
+}
+.nav-logo{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.6rem;
+  font-weight:700;
+  letter-spacing:-.02em;
+  color:var(--white);
+}
+.nav-logo .dot{color:var(--blue-light);}
+.nav-logo .accent{
+  background:linear-gradient(90deg,var(--blue-light),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{
+  color:var(--dim);font-size:.85rem;text-decoration:none;
+  font-weight:500;letter-spacing:.05em;text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--white);}
+.nav-cta{
+  background:var(--blue);
+  color:var(--white)!important;
+  padding:.5rem 1.4rem;border-radius:8px;
+  font-weight:700!important;
+  transition:background .2s,transform .15s!important;
+  box-shadow:0 0 20px var(--blue-glow);
+}
+.nav-cta:hover{background:var(--blue-light)!important;transform:translateY(-2px)!important;}
 
-  /* noise overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: .35;
-  }
+/* ── HERO ── */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:8rem 2rem 5rem;
+  position:relative;overflow:hidden;
+}
+.hero-orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(120px);
+  pointer-events:none;
+}
+.orb-1{width:600px;height:600px;background:rgba(37,99,235,.18);top:-100px;right:-100px;}
+.orb-2{width:500px;height:500px;background:rgba(6,182,212,.1);bottom:-50px;left:-80px;}
+.orb-3{width:300px;height:300px;background:rgba(16,185,129,.08);top:40%;left:40%;}
 
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 2.5rem;
-    background: rgba(15,15,30,0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    color: var(--green);
-    letter-spacing: 2px;
-  }
-  .nav-logo span { color: var(--gold); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
-  .nav-links a {
-    color: rgba(255,255,255,0.7);
-    text-decoration: none;
-    font-size: .85rem;
-    font-weight: 600;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    transition: color .2s;
-  }
-  .nav-links a:hover { color: var(--green); }
-  .nav-cta {
-    background: var(--green);
-    color: #000 !important;
-    padding: .5rem 1.25rem;
-    border-radius: 6px;
-    font-weight: 700 !important;
-    transition: background .2s, transform .15s !important;
-  }
-  .nav-cta:hover { background: #1db954 !important; transform: scale(1.04); }
+.hero-inner{
+  position:relative;z-index:2;
+  max-width:900px;margin:0 auto;text-align:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:rgba(37,99,235,.12);
+  border:1px solid rgba(37,99,235,.3);
+  padding:.45rem 1.2rem;border-radius:99px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;color:var(--blue-light);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:2rem;
+}
+.pulse{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--cyan);
+  animation:pulse-dot 1.6s ease-in-out infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.6);}}
 
-  /* hero, sections identical – we keep all existing style to maintain look */
-  #hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 8rem 2rem 4rem; }
-  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(37,211,102,.12) 0%, transparent 70%), radial-gradient(ellipse 50% 50% at 20% 80%, rgba(245,166,35,.08) 0%, transparent 60%), linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0d2137 100%); }
-  .hero-rings { position: absolute; right: -10vw; top: 50%; transform: translateY(-50%); width: 70vw; height: 70vw; max-width: 750px; max-height: 750px; opacity: .07; pointer-events: none; }
-  .hero-rings circle { fill: none; stroke: var(--green); stroke-width: 1; animation: pulse-ring 4s ease-in-out infinite; }
-  .hero-rings circle:nth-child(2) { animation-delay: .6s; }
-  .hero-rings circle:nth-child(3) { animation-delay: 1.2s; }
-  .hero-rings circle:nth-child(4) { animation-delay: 1.8s; }
-  @keyframes pulse-ring { 0%,100% { opacity: .3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.03); } }
-  .hero-inner { position: relative; z-index: 2; max-width: 780px; text-align: center; }
-  .badge { display: inline-flex; align-items: center; gap: .5rem; background: rgba(37,211,102,.12); border: 1px solid rgba(37,211,102,.35); padding: .4rem 1rem; border-radius: 100px; font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 1.5rem; }
-  .badge-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: blink 1.4s ease-in-out infinite; }
-  @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.2;} }
-  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.2rem, 9vw, 7rem); line-height: .95; letter-spacing: .02em; margin-bottom: 1.5rem; }
-  h1 .line-green { color: var(--green); }
-  h1 .line-gold  { color: var(--gold); }
-  .hero-sub { font-size: clamp(.95rem, 2vw, 1.2rem); color: rgba(255,255,255,.65); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7; font-weight: 300; }
-  .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-  .btn-primary { display: inline-flex; align-items: center; gap: .5rem; background: var(--green); color: #000; font-weight: 800; font-size: 1rem; padding: .9rem 2rem; border-radius: 8px; text-decoration: none; transition: transform .2s, box-shadow .2s; box-shadow: 0 0 30px rgba(37,211,102,.35); }
-  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(37,211,102,.5); }
-  .btn-secondary { display: inline-flex; align-items: center; gap: .5rem; background: transparent; color: var(--white); font-weight: 600; font-size: 1rem; padding: .9rem 2rem; border-radius: 8px; text-decoration: none; border: 1px solid rgba(255,255,255,.2); transition: border-color .2s, background .2s; }
-  .btn-secondary:hover { border-color: var(--green); background: rgba(37,211,102,.08); }
-  .hero-stats { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; margin-top: 4rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,.08); position: relative; z-index: 2; }
-  .stat-item { text-align: center; }
-  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--green); line-height: 1; display: block; }
-  .stat-label { font-size: .75rem; color: rgba(255,255,255,.45); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; margin-top: .25rem; }
-  .ticker-wrap { background: var(--green); overflow: hidden; padding: .6rem 0; position: relative; z-index: 5; }
-  .ticker-track { display: flex; gap: 0; animation: ticker 30s linear infinite; white-space: nowrap; }
-  .ticker-item { font-family: 'Space Mono', monospace; font-size: .78rem; font-weight: 700; color: #000; padding: 0 2.5rem; flex-shrink: 0; }
-  .ticker-item::before { content: '✦ '; color: #0a5c2f; }
-  @keyframes ticker { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
-  section { position: relative; z-index: 2; }
-  .section-label { font-family: 'Space Mono', monospace; font-size: .7rem; color: var(--green); letter-spacing: .2em; text-transform: uppercase; margin-bottom: .75rem; }
-  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1; letter-spacing: .03em; margin-bottom: 1rem; }
-  .section-body { font-size: 1rem; color: rgba(255,255,255,.6); line-height: 1.75; font-weight: 300; max-width: 520px; }
-  #why { padding: 7rem 2rem; background: linear-gradient(180deg, #0d0d1f 0%, #111827 100%); }
-  .why-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-  .growth-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; backdrop-filter: blur(10px); position: relative; overflow: hidden; }
-  .growth-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--green), var(--gold)); }
-  .growth-number { font-family: 'Bebas Neue', sans-serif; font-size: 6rem; color: var(--green); line-height: 1; text-shadow: 0 0 60px rgba(37,211,102,.4); }
-  .growth-number span { color: var(--gold); }
-  .growth-label { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; margin-top: .5rem; }
-  .growth-sub { font-size: .85rem; color: rgba(255,255,255,.5); line-height: 1.6; }
-  .stat-bars { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
-  .bar-row { display: flex; flex-direction: column; gap: .35rem; }
-  .bar-info { display: flex; justify-content: space-between; font-size: .78rem; font-weight: 600; }
-  .bar-info span:last-child { color: var(--green); }
-  .bar-track { height: 7px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--green-dark), var(--green)); transform: scaleX(0); transform-origin: left; transition: transform 1.4s cubic-bezier(.16,1,.3,1); }
-  .bar-fill.animated { transform: scaleX(1); }
-  #packages { padding: 7rem 2rem; background: #0a0a18; }
-  .packages-head { text-align: center; max-width: 600px; margin: 0 auto 4rem; }
-  .pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
-  .pkg-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 20px; padding: 2.5rem 2rem; position: relative; overflow: hidden; transition: transform .3s, border-color .3s, box-shadow .3s; display: flex; flex-direction: column; }
-  .pkg-card:hover { transform: translateY(-6px); border-color: rgba(37,211,102,.4); box-shadow: 0 20px 60px rgba(37,211,102,.1); }
-  .pkg-card.featured { background: linear-gradient(145deg, rgba(37,211,102,.1), rgba(18,140,126,.08)); border-color: rgba(37,211,102,.5); box-shadow: 0 0 60px rgba(37,211,102,.12); }
-  .pkg-card.featured::after { content: 'MOST POPULAR'; position: absolute; top: 1.25rem; right: -2.5rem; background: var(--gold); color: #000; font-family: 'Space Mono', monospace; font-size: .6rem; font-weight: 700; letter-spacing: .15em; padding: .3rem 3.5rem; transform: rotate(45deg); }
-  .pkg-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem; background: rgba(37,211,102,.12); border: 1px solid rgba(37,211,102,.2); }
-  .pkg-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; letter-spacing: .05em; margin-bottom: .25rem; }
-  .pkg-tagline { font-size: .8rem; color: rgba(255,255,255,.45); margin-bottom: 1.5rem; }
-  /* price modifications: remove once-off, show pay‑as‑you‑go starting at R250/mo */
-  .pkg-price { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: var(--green); line-height: 1.2; }
-  .pkg-price .currency { font-size: 1.8rem; vertical-align: top; line-height: 1.8; }
-  .pkg-price .per { font-family: 'Sora', sans-serif; font-size: .75rem; color: rgba(255,255,255,.5); font-weight: 400; display: block; margin-top: 0.25rem; }
-  .pkg-divider { border: none; border-top: 1px solid rgba(255,255,255,.07); margin: 1.5rem 0; }
-  .pkg-features { list-style: none; flex: 1; }
-  .pkg-features li { font-size: .88rem; color: rgba(255,255,255,.7); padding: .45rem 0; display: flex; align-items: flex-start; gap: .6rem; line-height: 1.4; }
-  .pkg-features li .check { color: var(--green); font-size: 1rem; flex-shrink: 0; }
-  .pkg-features li .x { color: rgba(255,255,255,.2); font-size: 1rem; flex-shrink: 0; }
-  .pkg-btn { display: block; text-align: center; margin-top: 2rem; padding: .85rem; border-radius: 10px; font-weight: 700; font-size: .9rem; text-decoration: none; transition: all .2s; letter-spacing: .04em; cursor: pointer; border: none; width: 100%; background: transparent; }
-  .pkg-btn-outline { border: 1px solid rgba(37,211,102,.4); color: var(--green); background: transparent; }
-  .pkg-btn-outline:hover { background: rgba(37,211,102,.1); }
-  .pkg-btn-solid { background: var(--green); color: #000; }
-  .pkg-btn-solid:hover { background: #1db954; box-shadow: 0 6px 30px rgba(37,211,102,.4); transform: translateY(-2px); }
+h1{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(3rem,8vw,6.5rem);
+  font-weight:700;
+  line-height:.95;
+  letter-spacing:-.03em;
+  margin-bottom:1.75rem;
+}
+h1 .grad{
+  background:linear-gradient(135deg,var(--blue-light) 0%,var(--cyan) 50%,var(--green) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  display:inline-block;
+}
+h1 .under{
+  position:relative;display:inline-block;
+}
+h1 .under::after{
+  content:'';
+  position:absolute;bottom:-6px;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  border-radius:2px;
+  animation:underline-grow 1s ease forwards .6s;
+  transform-origin:left;transform:scaleX(0);
+}
+@keyframes underline-grow{to{transform:scaleX(1);}}
 
-  /* rest of original styles: how, showcase, testimonials, cta, footer identical */
-  #how { padding: 7rem 2rem; background: linear-gradient(180deg, #111827 0%, #0a0a18 100%); }
-  .how-inner { max-width: 1100px; margin: 0 auto; }
-  .how-head { text-align: center; margin-bottom: 5rem; }
-  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; position: relative; }
-  .steps::before { content: ''; position: absolute; top: 2rem; left: calc(12.5% + 1rem); right: calc(12.5% + 1rem); height: 1px; background: linear-gradient(90deg, transparent, var(--green), var(--gold), var(--green), transparent); opacity: .3; }
-  .step-card { text-align: center; padding: 2rem 1.25rem; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 16px; transition: transform .3s; }
-  .step-card:hover { transform: translateY(-5px); }
-  .step-num { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, rgba(37,211,102,.2), rgba(18,140,126,.1)); border: 2px solid rgba(37,211,102,.4); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--green); margin: 0 auto 1.5rem; }
-  .step-title { font-weight: 700; font-size: 1.05rem; margin-bottom: .5rem; }
-  .step-text { font-size: .82rem; color: rgba(255,255,255,.5); line-height: 1.6; }
-  #testimonials { padding: 7rem 2rem; background: #0a0a18; overflow: hidden; }
-  .testi-head { text-align: center; max-width: 600px; margin: 0 auto 4rem; }
-  .testi-scroll { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1.5rem; scroll-snap-type: x mandatory; max-width: 1200px; margin: 0 auto; scrollbar-width: none; }
-  .testi-scroll::-webkit-scrollbar { display: none; }
-  .testi-card { min-width: 340px; flex-shrink: 0; scroll-snap-align: start; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 20px; padding: 2rem; position: relative; overflow: hidden; transition: border-color .3s; }
-  .testi-card:hover { border-color: rgba(37,211,102,.3); }
-  .testi-card::before { content: '"'; position: absolute; top: -.5rem; right: 1.5rem; font-family: 'Bebas Neue', sans-serif; font-size: 8rem; color: rgba(37,211,102,.07); line-height: 1; }
-  .testi-stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; }
-  .testi-growth { display: inline-flex; align-items: center; gap: .4rem; background: rgba(37,211,102,.12); border: 1px solid rgba(37,211,102,.25); padding: .25rem .75rem; border-radius: 99px; font-size: .75rem; font-weight: 700; color: var(--green); margin-bottom: 1.5rem; }
-  .testi-text { font-size: .9rem; line-height: 1.7; color: rgba(255,255,255,.75); margin-bottom: 1.5rem; }
-  .testi-author { display: flex; align-items: center; gap: .75rem; }
-  .testi-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: #fff; flex-shrink: 0; }
-  .testi-name { font-weight: 700; font-size: .9rem; }
-  .testi-role { font-size: .75rem; color: rgba(255,255,255,.4); }
-  #showcase { padding: 7rem 2rem; background: linear-gradient(135deg, #071a12 0%, #0d1a2e 100%); overflow: hidden; }
-  .showcase-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-  .phone-mockup { position: relative; max-width: 300px; margin: 0 auto; }
-  .phone-frame { background: #111; border-radius: 40px; padding: 1rem; box-shadow: 0 0 80px rgba(37,211,102,.25), 0 0 200px rgba(37,211,102,.08); border: 2px solid rgba(37,211,102,.2); position: relative; overflow: hidden; }
-  .phone-screen { background: #ECE5DD; border-radius: 28px; overflow: hidden; min-height: 520px; }
-  .wa-header { background: #075E54; padding: .85rem 1rem; display: flex; align-items: center; gap: .75rem; }
-  .wa-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: #fff; }
-  .wa-name { font-size: .9rem; font-weight: 700; color: #fff; }
-  .wa-status { font-size: .7rem; color: rgba(255,255,255,.6); }
-  .wa-body { padding: .75rem; display: flex; flex-direction: column; gap: .5rem; background: #ECE5DD; }
-  .msg { max-width: 85%; padding: .55rem .75rem; border-radius: 8px; font-size: .78rem; line-height: 1.5; color: #303030; position: relative; }
-  .msg-in { background: #fff; align-self: flex-start; border-top-left-radius: 2px; }
-  .msg-out { background: #DCF8C6; align-self: flex-end; border-top-right-radius: 2px; }
-  .msg-time { font-size: .6rem; color: rgba(0,0,0,.4); float: right; margin-left: .75rem; margin-top: .15rem; }
-  .wa-typing { display: flex; gap: .3rem; align-items: center; padding: .5rem .75rem; background: #fff; max-width: 60px; border-radius: 8px; margin: .25rem .75rem; }
-  .dot-typing { width: 6px; height: 6px; border-radius: 50%; background: #999; animation: bounce 1.2s ease-in-out infinite; }
-  .dot-typing:nth-child(2) { animation-delay: .2s; }
-  .dot-typing:nth-child(3) { animation-delay: .4s; }
-  @keyframes bounce { 0%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-6px);} }
-  .benefit-list { list-style: none; margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
-  .benefit-item { display: flex; gap: 1rem; align-items: flex-start; padding: 1rem 1.25rem; background: rgba(37,211,102,.05); border: 1px solid rgba(37,211,102,.12); border-radius: 12px; transition: background .2s; }
-  .benefit-item:hover { background: rgba(37,211,102,.1); }
-  .benefit-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: .1rem; }
-  .benefit-title { font-weight: 700; font-size: .92rem; margin-bottom: .2rem; }
-  .benefit-text { font-size: .8rem; color: rgba(255,255,255,.5); line-height: 1.5; }
-  #cta { padding: 6rem 2rem; background: linear-gradient(135deg, #051a0c 0%, #0a1628 100%); position: relative; overflow: hidden; }
-  #cta::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(37,211,102,.1) 0%, transparent 70%); }
-  .cta-inner { max-width: 800px; margin: 0 auto; text-align: center; position: relative; }
-  .cta-inner .section-title { font-size: clamp(2.8rem, 6vw, 5rem); }
-  .cta-inner p { font-size: 1.1rem; color: rgba(255,255,255,.6); margin: 1.25rem auto 2.5rem; max-width: 520px; line-height: 1.7; font-weight: 300; }
-  .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-  .wa-btn { display: inline-flex; align-items: center; gap: .6rem; background: var(--green); color: #000; font-weight: 800; font-size: 1.05rem; padding: 1rem 2.25rem; border-radius: 10px; text-decoration: none; box-shadow: 0 0 40px rgba(37,211,102,.4); transition: transform .2s, box-shadow .2s; }
-  .wa-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 60px rgba(37,211,102,.55); }
-  .wa-btn .wa-icon { font-size: 1.3rem; }
-  footer { background: #060610; padding: 3rem 2rem; border-top: 1px solid rgba(255,255,255,.06); text-align: center; position: relative; z-index: 2; }
-  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--green); letter-spacing: 2px; margin-bottom: .75rem; }
-  .footer-logo span { color: var(--gold); }
-  .footer-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
-  .footer-links a { font-size: .8rem; color: rgba(255,255,255,.4); text-decoration: none; }
-  .footer-links a:hover { color: var(--green); }
-  .footer-copy { font-size: .75rem; color: rgba(255,255,255,.25); }
-  .float-wa { position: fixed; bottom: 2rem; right: 2rem; z-index: 200; width: 60px; height: 60px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; box-shadow: 0 4px 30px rgba(37,211,102,.55); text-decoration: none; animation: float-bob 3s ease-in-out infinite; transition: transform .2s; }
-  .float-wa:hover { transform: scale(1.1); }
-  @keyframes float-bob { 0%,100% { box-shadow: 0 4px 30px rgba(37,211,102,.55); } 50% { box-shadow: 0 4px 60px rgba(37,211,102,.8); } }
-  @media (max-width: 900px) { .nav-links { display: none; } .why-grid, .showcase-inner { grid-template-columns: 1fr; gap: 3rem; } .pkg-grid { grid-template-columns: 1fr; max-width: 420px; } .steps { grid-template-columns: 1fr 1fr; } .steps::before { display: none; } }
-  @media (max-width: 540px) { .steps { grid-template-columns: 1fr; } h1 { font-size: 3rem; } }
-  .reveal { opacity: 0; transform: translateY(32px); transition: opacity .8s ease, transform .8s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity .8s ease, transform .8s ease; }
-  .reveal-left.visible { opacity: 1; transform: translateX(0); }
-  .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity .8s ease, transform .8s ease; }
-  .reveal-right.visible { opacity: 1; transform: translateX(0); }
+.hero-sub{
+  font-size:clamp(1rem,2.2vw,1.25rem);
+  color:var(--dim);
+  max-width:640px;margin:0 auto 3rem;
+  line-height:1.7;font-weight:400;
+}
+.hero-sub strong{color:var(--white);}
 
-  /* ---------- NEW MODAL ---------- */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(6px);
-    z-index: 1000; display: none; align-items: center; justify-content: center;
-  }
-  .modal-card {
-    background: #1e1e30; max-width: 450px; width: 90%; padding: 2rem;
-    border-radius: 32px; border: 1px solid var(--green); box-shadow: 0 0 70px rgba(37,211,102,.3);
-    text-align: center;
-  }
-  .modal-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--green); margin-bottom: 1rem; }
-  .modal-card p { color: #aaa; margin-bottom: 2rem; font-size: 0.95rem; }
-  .month-selector { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
-  .month-btn { background: #2a2a40; border: 1px solid #3a3a55; color: white; width: 44px; height: 44px; border-radius: 12px; font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: .2s; }
-  .month-btn:hover { background: var(--green); color: #000; border-color: var(--green); }
-  #monthCount { font-size: 2rem; font-family: 'Bebas Neue', sans-serif; color: var(--gold); min-width: 70px; }
-  .total-price { background: rgba(37,211,102,0.1); padding: 1rem; border-radius: 40px; margin: 1.5rem 0; border: 1px dashed var(--green); }
-  .total-price span { font-size: 2.2rem; font-family: 'Bebas Neue', sans-serif; color: var(--green); }
-  .modal-actions { display: flex; flex-direction: column; gap: 0.8rem; }
-  .modal-wa-btn, .modal-trial-btn { padding: 1rem; border-radius: 60px; font-weight: 700; text-decoration: none; border: none; font-size: 1rem; cursor: pointer; transition: .2s; }
-  .modal-wa-btn { background: var(--green); color: #000; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-  .modal-wa-btn:hover { background: #1db954; transform: scale(1.02); }
-  .modal-trial-btn { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-  .modal-trial-btn:hover { background: rgba(245,166,35,0.1); }
-  .modal-close { margin-top: 1.5rem; background: none; border: none; color: #777; text-decoration: underline; cursor: pointer; font-size: 0.8rem; }
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:4rem;}
+.btn-blue{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--blue);color:var(--white);
+  font-weight:800;font-size:1rem;
+  padding:.9rem 2.2rem;border-radius:10px;
+  text-decoration:none;
+  box-shadow:0 0 40px var(--blue-glow);
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-blue:hover{transform:translateY(-3px);box-shadow:0 10px 50px var(--blue-glow);}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--faint);color:var(--white);
+  font-weight:600;font-size:1rem;
+  padding:.9rem 2.2rem;border-radius:10px;
+  text-decoration:none;border:1px solid rgba(255,255,255,.1);
+  transition:border-color .2s,background .2s;
+}
+.btn-ghost:hover{border-color:rgba(99,179,237,.4);background:rgba(37,99,235,.08);}
+
+/* hero trust row */
+.hero-trust{
+  display:flex;align-items:center;justify-content:center;gap:2.5rem;
+  flex-wrap:wrap;
+  padding-top:2.5rem;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.trust-item{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:var(--muted);}
+.trust-item strong{color:var(--dim);}
+.trust-check{color:var(--green);font-size:1rem;}
+
+/* ── TICKER ── */
+.ticker-wrap{
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  overflow:hidden;padding:.6rem 0;position:relative;z-index:5;
+}
+.ticker-track{
+  display:flex;gap:0;
+  animation:ticker 35s linear infinite;white-space:nowrap;
+}
+.ticker-item{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;font-weight:700;color:rgba(0,0,30,.8);
+  padding:0 2.5rem;flex-shrink:0;
+}
+.ticker-item::before{content:'◆ ';}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ── SECTIONS ── */
+section{position:relative;z-index:2;}
+.section-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;color:var(--blue-light);
+  letter-spacing:.2em;text-transform:uppercase;margin-bottom:.6rem;
+}
+.section-h{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(2rem,4.5vw,3.5rem);
+  font-weight:700;letter-spacing:-.03em;
+  line-height:1.05;margin-bottom:1rem;
+}
+.section-h .g{
+  background:linear-gradient(90deg,var(--blue-light),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.section-p{font-size:1rem;color:var(--dim);line-height:1.75;font-weight:400;}
+
+/* ── PRICING (PAYG CALCULATOR) ── */
+#pricing{
+  padding:8rem 2rem;
+  background:linear-gradient(180deg,var(--ink) 0%,var(--ink2) 100%);
+}
+.pricing-head{text-align:center;max-width:700px;margin:0 auto 1.5rem;}
+.pricing-head .section-p{max-width:100%;}
+
+/* PAYG toggle */
+.payg-toggle{
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  margin-bottom:3rem;flex-wrap:wrap;
+}
+.toggle-label{font-size:.85rem;color:var(--muted);font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+.toggle-pills{
+  display:flex;gap:.4rem;
+  background:var(--faint);border:1px solid rgba(255,255,255,.08);
+  padding:.3rem;border-radius:12px;
+}
+.pill{
+  padding:.45rem 1.1rem;border-radius:8px;
+  font-size:.82rem;font-weight:700;cursor:pointer;
+  border:none;background:transparent;color:var(--muted);
+  transition:all .2s;font-family:'Cabinet Grotesk',sans-serif;
+  letter-spacing:.02em;
+}
+.pill.active{background:var(--blue);color:#fff;box-shadow:0 0 16px var(--blue-glow);}
+
+/* plan cards */
+.plan-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;max-width:1100px;margin:0 auto 4rem;
+}
+.plan-card{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:20px;padding:2.5rem 2rem;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+  backdrop-filter:blur(12px);
+}
+.plan-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(37,99,235,.4);
+  box-shadow:0 20px 60px rgba(37,99,235,.12);
+}
+.plan-card.featured{
+  border-color:rgba(6,182,212,.45);
+  box-shadow:0 0 60px rgba(6,182,212,.1);
+  background:linear-gradient(145deg,rgba(37,99,235,.12),rgba(6,182,212,.07));
+}
+.plan-card.featured::before{
+  content:'BEST VALUE';
+  position:absolute;top:1.25rem;right:-2.5rem;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  color:#fff;font-family:'JetBrains Mono',monospace;
+  font-size:.58rem;font-weight:700;letter-spacing:.15em;
+  padding:.3rem 3.5rem;transform:rotate(45deg);
+}
+.plan-icon{
+  width:50px;height:50px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;margin-bottom:1.2rem;
+  background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.2);
+}
+.plan-name{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.6rem;letter-spacing:-.02em;margin-bottom:.2rem;
+}
+.plan-tagline{font-size:.8rem;color:var(--muted);margin-bottom:1.5rem;}
+
+/* DYNAMIC PRICE DISPLAY */
+.plan-price-area{margin-bottom:1.25rem;}
+.price-row{display:flex;align-items:flex-end;gap:.3rem;line-height:1;}
+.price-currency{font-family:'Clash Display',sans-serif;font-size:1.6rem;color:var(--blue-light);padding-bottom:.35rem;}
+.price-amount{
+  font-family:'Clash Display',sans-serif;
+  font-size:4rem;color:var(--white);
+  transition:all .3s;
+}
+.price-period{font-size:.8rem;color:var(--muted);padding-bottom:.5rem;font-weight:500;}
+.price-total{
+  font-size:.78rem;color:var(--cyan);font-weight:600;margin-top:.35rem;
+  min-height:1.2em;transition:all .3s;
+}
+.price-savings{
+  display:inline-flex;align-items:center;gap:.3rem;
+  background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);
+  color:var(--green);font-size:.72rem;font-weight:700;
+  padding:.2rem .6rem;border-radius:99px;margin-top:.4rem;
+}
+.plan-divider{border:none;border-top:1px solid rgba(255,255,255,.07);margin:1.25rem 0;}
+.plan-features{list-style:none;flex:1;}
+.plan-features li{
+  font-size:.87rem;color:var(--dim);padding:.4rem 0;
+  display:flex;align-items:flex-start;gap:.6rem;line-height:1.4;
+}
+.plan-features li .ck{color:var(--green);flex-shrink:0;}
+.plan-features li .no{color:rgba(255,255,255,.18);flex-shrink:0;}
+
+.plan-btn{
+  display:block;text-align:center;margin-top:2rem;padding:.85rem;
+  border-radius:10px;font-weight:800;font-size:.9rem;
+  text-decoration:none;transition:all .2s;letter-spacing:.02em;
+}
+.plan-btn-ghost{border:1px solid rgba(37,99,235,.4);color:var(--blue-light);}
+.plan-btn-ghost:hover{background:rgba(37,99,235,.1);}
+.plan-btn-solid{
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  color:#fff;
+}
+.plan-btn-solid:hover{box-shadow:0 6px 30px var(--blue-glow);transform:translateY(-2px);}
+
+/* ── PAYG CALCULATOR WIDGET ── */
+.payg-widget{
+  max-width:800px;margin:0 auto;
+  background:var(--card);
+  border:1px solid rgba(6,182,212,.25);
+  border-radius:24px;padding:3rem;
+  backdrop-filter:blur(12px);
+  position:relative;overflow:hidden;
+}
+.payg-widget::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(6,182,212,.12),transparent 70%);
+}
+.payg-title{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.8rem;letter-spacing:-.02em;margin-bottom:.4rem;
+}
+.payg-sub{font-size:.9rem;color:var(--muted);margin-bottom:2rem;}
+
+.payg-selector{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem;
+  margin-bottom:2rem;
+}
+.month-btn{
+  padding:.65rem .5rem;border-radius:10px;
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.03);
+  color:var(--dim);font-weight:700;font-size:.85rem;
+  cursor:pointer;transition:all .2s;
+  font-family:'Cabinet Grotesk',sans-serif;
+  text-align:center;
+}
+.month-btn:hover{border-color:rgba(37,99,235,.4);color:var(--white);}
+.month-btn.sel{
+  background:var(--blue);border-color:var(--blue);color:#fff;
+  box-shadow:0 0 18px var(--blue-glow);
+}
+.month-btn.best{
+  border-color:rgba(6,182,212,.5);color:var(--cyan);
+  position:relative;
+}
+.month-btn.best::after{
+  content:'BEST';position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  font-size:.5rem;font-weight:700;letter-spacing:.1em;
+  background:var(--cyan);color:#000;padding:.1rem .35rem;border-radius:3px;
+}
+
+.payg-result{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;
+  padding:2rem;background:rgba(255,255,255,.03);
+  border-radius:16px;border:1px solid rgba(255,255,255,.06);
+  margin-bottom:2rem;
+}
+.result-item{text-align:center;}
+.result-value{
+  font-family:'Clash Display',sans-serif;
+  font-size:2.2rem;color:var(--white);
+  letter-spacing:-.02em;
+}
+.result-value.green{color:var(--green);}
+.result-value.blue{color:var(--blue-light);}
+.result-value.amber{color:var(--amber);}
+.result-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem;font-weight:600;}
+
+.payg-note{
+  display:flex;gap:.75rem;align-items:flex-start;
+  background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);
+  border-radius:12px;padding:1rem 1.25rem;margin-bottom:2rem;
+}
+.payg-note-icon{font-size:1.2rem;flex-shrink:0;margin-top:.05rem;}
+.payg-note-text{font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.55;}
+.payg-note-text strong{color:var(--amber);}
+
+.payg-cta{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+}
+.payg-cta .months-summary{font-size:.85rem;color:var(--muted);}
+.payg-cta .months-summary strong{color:var(--white);}
+
+/* ── HOW IT WORKS ── */
+#how{
+  padding:7rem 2rem;
+  background:linear-gradient(180deg,var(--ink2) 0%,var(--ink) 100%);
+}
+.how-inner{max-width:1100px;margin:0 auto;}
+.how-head{text-align:center;margin-bottom:5rem;}
+.steps-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:2rem;position:relative;
+}
+.steps-row::before{
+  content:'';position:absolute;top:32px;
+  left:calc(12.5% + .75rem);right:calc(12.5% + .75rem);
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--blue),var(--cyan),var(--blue),transparent);
+  opacity:.3;
+}
+.step{
+  text-align:center;padding:2rem 1.25rem;
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:16px;
+  transition:transform .3s,border-color .3s;
+}
+.step:hover{transform:translateY(-5px);border-color:rgba(37,99,235,.3);}
+.step-num{
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(37,99,235,.2),rgba(6,182,212,.1));
+  border:2px solid rgba(37,99,235,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Clash Display',sans-serif;font-size:1.8rem;
+  color:var(--blue-light);margin:0 auto 1.5rem;
+}
+.step-title{font-weight:800;font-size:1rem;margin-bottom:.5rem;}
+.step-text{font-size:.82rem;color:var(--muted);line-height:1.6;}
+
+/* ── WHY WHATSAPP ── */
+#why{
+  padding:7rem 2rem;
+  background:var(--ink2);
+}
+.why-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:5rem;align-items:center;
+  max-width:1100px;margin:0 auto;
+}
+/* phone mockup */
+.phone-wrap{position:relative;max-width:300px;margin:0 auto;}
+.phone-outer{
+  background:#1a1a2e;border-radius:42px;padding:1rem;
+  box-shadow:0 0 80px rgba(37,99,235,.3),0 0 200px rgba(6,182,212,.08);
+  border:2px solid rgba(37,99,235,.25);
+}
+.phone-screen{background:#ECE5DD;border-radius:30px;overflow:hidden;min-height:520px;}
+.wa-header{background:#075E54;padding:.85rem 1rem;display:flex;align-items:center;gap:.75rem;}
+.wa-av{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--green-wa);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;font-weight:800;color:#fff;
+}
+.wa-name{font-size:.88rem;font-weight:700;color:#fff;}
+.wa-status{font-size:.68rem;color:rgba(255,255,255,.6);}
+.wa-body{padding:.75rem;display:flex;flex-direction:column;gap:.5rem;background:#ECE5DD;}
+.msg{max-width:85%;padding:.55rem .75rem;border-radius:8px;font-size:.76rem;line-height:1.5;color:#303030;position:relative;}
+.msg-in{background:#fff;align-self:flex-start;border-top-left-radius:2px;}
+.msg-out{background:#DCF8C6;align-self:flex-end;border-top-right-radius:2px;}
+.msg-time{font-size:.58rem;color:rgba(0,0,0,.4);float:right;margin-left:.75rem;margin-top:.15rem;}
+.wa-typing{display:flex;gap:.3rem;align-items:center;padding:.5rem .75rem;background:#fff;max-width:60px;border-radius:8px;margin:.25rem .75rem;}
+.dt{width:6px;height:6px;border-radius:50%;background:#999;animation:bounce 1.2s ease-in-out infinite;}
+.dt:nth-child(2){animation-delay:.2s;}
+.dt:nth-child(3){animation-delay:.4s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-6px);}}
+
+.why-right .section-p{max-width:100%;}
+.benefit-grid{display:flex;flex-direction:column;gap:.9rem;margin-top:2rem;}
+.benefit{
+  display:flex;gap:1rem;align-items:flex-start;
+  padding:.9rem 1.1rem;
+  background:rgba(37,99,235,.05);
+  border:1px solid rgba(37,99,235,.1);
+  border-radius:12px;
+  transition:background .2s;
+}
+.benefit:hover{background:rgba(37,99,235,.1);}
+.benefit-icon{font-size:1.3rem;flex-shrink:0;margin-top:.05rem;}
+.b-title{font-weight:700;font-size:.9rem;margin-bottom:.15rem;}
+.b-text{font-size:.78rem;color:var(--muted);line-height:1.5;}
+
+/* ── GROWTH STATS ── */
+#stats{
+  padding:7rem 2rem;
+  background:linear-gradient(135deg,#020617 0%,#0c1426 50%,#020617 100%);
+  position:relative;overflow:hidden;
+}
+#stats::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 50% at 50% 50%,rgba(37,99,235,.08),transparent 70%);
+}
+.stats-inner{max-width:1100px;margin:0 auto;position:relative;}
+.stats-head{text-align:center;margin-bottom:4rem;}
+.stat-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;
+}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:2rem 1.5rem;text-align:center;
+  backdrop-filter:blur(10px);
+  transition:transform .3s,border-color .3s;
+}
+.stat-card:hover{transform:translateY(-5px);border-color:rgba(37,99,235,.35);}
+.stat-big{
+  font-family:'Clash Display',sans-serif;
+  font-size:3.5rem;line-height:1;
+  background:linear-gradient(135deg,var(--blue-light),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:.4rem;
+}
+.stat-desc{font-size:.8rem;color:var(--muted);font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+
+/* ── TESTIMONIALS ── */
+#testimonials{
+  padding:7rem 2rem;
+  background:var(--ink2);
+}
+.testi-head{text-align:center;max-width:600px;margin:0 auto 4rem;}
+.testi-track{
+  display:flex;gap:1.5rem;overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  max-width:1200px;margin:0 auto;padding-bottom:1.5rem;
+  scrollbar-width:none;
+}
+.testi-track::-webkit-scrollbar{display:none;}
+.t-card{
+  min-width:350px;flex-shrink:0;scroll-snap-align:start;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:20px;padding:2rem;
+  position:relative;overflow:hidden;
+  transition:border-color .3s;
+}
+.t-card:hover{border-color:rgba(37,99,235,.3);}
+.t-card::before{
+  content:'"';
+  position:absolute;top:-1rem;right:1.5rem;
+  font-family:'Clash Display',sans-serif;
+  font-size:8rem;color:rgba(37,99,235,.06);line-height:1;
+}
+.t-stars{color:var(--amber);font-size:1rem;margin-bottom:.75rem;}
+.t-growth{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.22);
+  padding:.22rem .7rem;border-radius:99px;
+  font-size:.72rem;font-weight:700;color:var(--green);margin-bottom:1rem;
+}
+.t-text{font-size:.88rem;line-height:1.7;color:rgba(255,255,255,.7);margin-bottom:1.5rem;}
+.t-author{display:flex;align-items:center;gap:.75rem;}
+.t-av{
+  width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1rem;color:#fff;flex-shrink:0;
+}
+.t-name{font-weight:700;font-size:.88rem;}
+.t-role{font-size:.73rem;color:var(--muted);}
+
+/* ── CTA ── */
+#cta{
+  padding:7rem 2rem;
+  background:linear-gradient(135deg,#020a18 0%,#071428 100%);
+  position:relative;overflow:hidden;
+}
+#cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(37,99,235,.12),transparent 65%);
+}
+.cta-inner{max-width:800px;margin:0 auto;text-align:center;position:relative;}
+.cta-inner .section-h{font-size:clamp(2.5rem,5.5vw,4.5rem);}
+.cta-inner p{font-size:1.1rem;color:var(--dim);margin:1.25rem auto 2.5rem;max-width:520px;line-height:1.7;font-weight:400;}
+.cta-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.wa-cta{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--green-wa);color:#000;
+  font-weight:800;font-size:1.05rem;
+  padding:1rem 2.25rem;border-radius:10px;
+  text-decoration:none;
+  box-shadow:0 0 40px rgba(37,211,102,.4);
+  transition:transform .2s,box-shadow .2s;
+}
+.wa-cta:hover{transform:translateY(-4px);box-shadow:0 12px 60px rgba(37,211,102,.55);}
+.start-cta{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--blue);color:#fff;
+  font-weight:800;font-size:1.05rem;
+  padding:1rem 2.25rem;border-radius:10px;
+  text-decoration:none;
+  box-shadow:0 0 40px var(--blue-glow);
+  transition:transform .2s,box-shadow .2s;
+}
+.start-cta:hover{transform:translateY(-4px);box-shadow:0 12px 60px var(--blue-glow);}
+
+/* ── FOOTER ── */
+footer{
+  background:#010409;padding:3rem 2rem;
+  border-top:1px solid rgba(255,255,255,.05);
+  text-align:center;position:relative;z-index:2;
+}
+.footer-logo{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.8rem;font-weight:700;letter-spacing:-.02em;
+  margin-bottom:.75rem;
+}
+.footer-logo .accent{
+  background:linear-gradient(90deg,var(--blue-light),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.footer-links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;}
+.footer-links a{font-size:.8rem;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--blue-light);}
+.footer-copy{font-size:.74rem;color:rgba(255,255,255,.2);}
+
+/* ── FLOATING CTA ── */
+.float-cta{
+  position:fixed;bottom:2rem;right:2rem;z-index:300;
+  display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;
+}
+.float-wa{
+  width:58px;height:58px;background:var(--green-wa);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;text-decoration:none;
+  box-shadow:0 4px 30px rgba(37,211,102,.5);
+  animation:float-bob 3s ease-in-out infinite;
+  transition:transform .2s;
+}
+.float-wa:hover{transform:scale(1.1);}
+@keyframes float-bob{0%,100%{box-shadow:0 4px 30px rgba(37,211,102,.5);}50%{box-shadow:0 4px 60px rgba(37,211,102,.75);}}
+
+/* ── REVEAL ── */
+.rev{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
+.rev.vis{opacity:1;transform:translateY(0);}
+.rev-l{opacity:0;transform:translateX(-36px);transition:opacity .8s ease,transform .8s ease;}
+.rev-l.vis{opacity:1;transform:translateX(0);}
+.rev-r{opacity:0;transform:translateX(36px);transition:opacity .8s ease,transform .8s ease;}
+.rev-r.vis{opacity:1;transform:translateX(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .plan-grid{grid-template-columns:1fr;max-width:420px;margin:0 auto 3rem;}
+  .steps-row{grid-template-columns:1fr 1fr;}
+  .steps-row::before{display:none;}
+  .why-grid{grid-template-columns:1fr;gap:3rem;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
+  .payg-selector{grid-template-columns:repeat(3,1fr);}
+  .payg-result{grid-template-columns:1fr;}
+  .payg-cta{flex-direction:column;}
+}
+@media(max-width:540px){
+  nav{padding:1rem 1.25rem;}
+  h1{font-size:2.8rem;}
+  .steps-row{grid-template-columns:1fr;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
+  .payg-selector{grid-template-columns:repeat(3,1fr);}
+}
 </style>
 </head>
 <body>
 
-<nav>...</nav> <!-- nav unchanged -->
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Site<span class="accent">Flow</span><span class="dot">.</span></div>
+  <ul class="nav-links">
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#why">WhatsApp</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#cta" class="nav-cta">Start Free</a></li>
+  </ul>
+</nav>
 
-<section id="hero">...</section>
-<div class="ticker-wrap">...</div>
-<section id="why">...</section>
-
-<!-- PACKAGES SECTION (updated pricing & button triggers modal) -->
-<section id="packages">
-  <div class="packages-head reveal">
-    <p class="section-label">// pay‑as‑you‑go</p>
-    <h2 class="section-title">START AT <span style="color:var(--green)">R250/MONTH</span><br>NO DEPOSIT</h2>
-    <p class="section-body">Choose any plan, then select how many months you want to pay. Free trial available.</p>
-  </div>
-  <div class="pkg-grid">
-    <!-- Starter -->
-    <div class="pkg-card reveal">
-      <div class="pkg-icon">🌱</div>
-      <div class="pkg-name">Starter</div>
-      <div class="pkg-tagline">pay‑as‑you‑go from R250/mo</div>
-      <div class="pkg-price"><span class="currency">R</span>250<span style="font-size:1rem;">/mo</span></div>
-      <hr class="pkg-divider"/>
-      <ul class="pkg-features">  <!-- same features, just pricing change -->
-        <li><span class="check">✔</span> 1-Page Professional Website</li>
-        <li><span class="check">✔</span> WhatsApp Business Button</li>
-        <li><span class="check">✔</span> Mobile Responsive Design</li>
-        <li><span class="check">✔</span> .co.za Domain Name (1 Year)</li>
-        <li><span class="check">✔</span> Basic Logo Design</li>
-        <li><span class="check">✔</span> Google My Business Setup</li>
-        <li><span class="x">✘</span> <span style="opacity:.3">Multi-Page Website</span></li>
-        <li><span class="x">✘</span> <span style="opacity:.3">WhatsApp Catalogue</span></li>
-        <li><span class="x">✘</span> <span style="opacity:.3">Booking / Quote Form</span></li>
-      </ul>
-      <button class="pkg-btn pkg-btn-outline" onclick="openModal('Starter', 250)">Pay now →</button>
-    </div>
-    <!-- Growth -->
-    <div class="pkg-card featured reveal" style="transition-delay:.1s">
-      <div class="pkg-icon">🚀</div>
-      <div class="pkg-name">Growth</div>
-      <div class="pkg-tagline">pay‑as‑you‑go from R380/mo</div>
-      <div class="pkg-price"><span class="currency">R</span>380<span style="font-size:1rem;">/mo</span></div>
-      <hr class="pkg-divider"/>
-      <ul class="pkg-features">
-        <li><span class="check">✔</span> Up to 5-Page Website</li>
-        <li><span class="check">✔</span> WhatsApp Business Integration</li>
-        <li><span class="check">✔</span> Mobile + Tablet Responsive</li>
-        <li><span class="check">✔</span> .co.za Domain Name (1 Year)</li>
-        <li><span class="check">✔</span> Professional Logo + Brand Kit</li>
-        <li><span class="check">✔</span> Google My Business + Maps</li>
-        <li><span class="check">✔</span> WhatsApp Product Catalogue</li>
-        <li><span class="check">✔</span> Quote / Booking Request Form</li>
-        <li><span class="check">✔</span> Basic SEO Optimisation</li>
-      </ul>
-      <button class="pkg-btn pkg-btn-solid" onclick="openModal('Growth', 380)">Pay now →</button>
-    </div>
-    <!-- Pro -->
-    <div class="pkg-card reveal" style="transition-delay:.2s">
-      <div class="pkg-icon">👑</div>
-      <div class="pkg-name">Pro</div>
-      <div class="pkg-tagline">pay‑as‑you‑go from R599/mo</div>
-      <div class="pkg-price"><span class="currency">R</span>599<span style="font-size:1rem;">/mo</span></div>
-      <hr class="pkg-divider"/>
-      <ul class="pkg-features">
-        <li><span class="check">✔</span> Unlimited Pages</li>
-        <li><span class="check">✔</span> Full WhatsApp Business API</li>
-        <li><span class="check">✔</span> Custom Animations &amp; Design</li>
-        <li><span class="check">✔</span> .co.za + .com Domains (1 Year)</li>
-        <li><span class="check">✔</span> Full Brand Identity Pack</li>
-        <li><span class="check">✔</span> Advanced SEO + Google Ads Setup</li>
-        <li><span class="check">✔</span> WhatsApp Auto-Reply Bot</li>
-        <li><span class="check">✔</span> Online Payment Integration</li>
-        <li><span class="check">✔</span> Priority 24/7 WhatsApp Support</li>
-      </ul>
-      <button class="pkg-btn pkg-btn-outline" onclick="openModal('Pro', 599)">Pay now →</button>
-    </div>
-  </div>
-</section>
-
-<section id="how">...</section>
-<section id="showcase">...</section>
-<section id="testimonials">...</section>
-
-<!-- CTA (also updated WhatsApp number) -->
-<section id="cta">
-  <div class="cta-inner reveal">
-    <p class="section-label">// Ready to Level Up?</p>
-    <h2 class="section-title">LET'S BUILD YOUR<br><span style="color:var(--green)">BUSINESS</span> TODAY</h2>
-    <p>Join 1,200+ South African service providers who got a professional website and started winning more clients via WhatsApp. Pay as you go from <strong style="color:var(--green)">R250/month</strong>.</p>
-    <div class="cta-buttons">
-      <a href="https://wa.me/27689124033?text=Hi!%20I%20want%20to%20activate%20my%20SA%201Biz%20Plan" class="wa-btn" target="_blank">
-        <span class="wa-icon">💬</span> WhatsApp Us: 068 912 4033
-      </a>
-    </div>
-    <p style="font-size:.8rem; color:rgba(255,255,255,.3); margin-top:1.5rem;">
-      No obligation. Free trial option. 100% South African team.
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-orb orb-1"></div>
+  <div class="hero-orb orb-2"></div>
+  <div class="hero-orb orb-3"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="pulse"></span> The Pay-As-You-Go Web Platform for Service Pros</div>
+    <h1>
+      YOUR WEBSITE.<br>
+      <span class="grad">YOUR TERMS.</span><br>
+      <span class="under">YOUR PRICE.</span>
+    </h1>
+    <p class="hero-sub">
+      Professional website, logo, hosting &amp; domain — powered by <strong>WhatsApp Business</strong>. Start for just <strong>$19.99/month</strong>. Pay one month, six months, or a full year. <em>No lock-in, no surprises.</em>
     </p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-blue">⚡ See My Price</a>
+      <a href="#why" class="btn-ghost">💬 Why WhatsApp?</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><span class="trust-check">✔</span> <strong>Cancel anytime</strong></div>
+      <div class="trust-item"><span class="trust-check">✔</span> <strong>No credit card</strong> required to start</div>
+      <div class="trust-item"><span class="trust-check">✔</span> Live in <strong>72 hours</strong></div>
+      <div class="trust-item"><span class="trust-check">✔</span> <strong>US-based</strong> support team</div>
+    </div>
   </div>
 </section>
 
-<footer>...</footer>
-<a href="https://wa.me/27689124033?text=Hi!%20I%20saw%20your%20ad%20and%20want%20to%20activate%20my%20SA%201Biz%20Plan" class="float-wa" target="_blank" title="Chat on WhatsApp">💬</a>
-
-<!-- MODAL overlay -->
-<div class="modal-overlay" id="payModal" onclick="if(event.target===this) closeModal()">
-  <div class="modal-card">
-    <h3 id="modalPlanName">Starter</h3>
-    <p>Select how many months you want to pay (pay‑as‑you‑go)</p>
-    <div class="month-selector">
-      <button class="month-btn" id="decMonths">−</button>
-      <span id="monthCount">1</span>
-      <button class="month-btn" id="incMonths">+</button>
-    </div>
-    <div class="total-price">
-      Total: R <span id="totalAmount">250</span>
-    </div>
-    <div class="modal-actions">
-      <a href="#" id="modalWhatsappLink" class="modal-wa-btn" target="_blank">
-        💬 Pay now via WhatsApp
-      </a>
-      <button class="modal-trial-btn" id="freeTrialBtn">Start free trial (no payment)</button>
-    </div>
-    <button class="modal-close" onclick="closeModal()">close</button>
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">Start at $19.99/month</span>
+    <span class="ticker-item">Pay 1 Month or 12 — You Choose</span>
+    <span class="ticker-item">WhatsApp Business Integration</span>
+    <span class="ticker-item">Professional Logo Included</span>
+    <span class="ticker-item">US Hosting + .com Domain</span>
+    <span class="ticker-item">80% Average Revenue Growth</span>
+    <span class="ticker-item">Save 16% Paying Annually</span>
+    <span class="ticker-item">72-Hour Delivery</span>
+    <span class="ticker-item">Start at $19.99/month</span>
+    <span class="ticker-item">Pay 1 Month or 12 — You Choose</span>
+    <span class="ticker-item">WhatsApp Business Integration</span>
+    <span class="ticker-item">Professional Logo Included</span>
+    <span class="ticker-item">US Hosting + .com Domain</span>
+    <span class="ticker-item">80% Average Revenue Growth</span>
+    <span class="ticker-item">Save 16% Paying Annually</span>
+    <span class="ticker-item">72-Hour Delivery</span>
   </div>
 </div>
 
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-head rev">
+    <p class="section-tag">// Transparent Pricing</p>
+    <h2 class="section-h">PAY AS YOU <span class="g">GO.</span><br>OR PAY IT ALL.</h2>
+    <p class="section-p">Choose how you pay. One month, a few months, or the whole year at a discount. Your service runs until your paid time is up — then simply top up. No auto-billing surprises.</p>
+  </div>
+
+  <!-- plan selector -->
+  <div class="payg-toggle rev" style="transition-delay:.1s">
+    <span class="toggle-label">Plan:</span>
+    <div class="toggle-pills">
+      <button class="pill active" onclick="selectPlan('starter',this)">Starter</button>
+      <button class="pill" onclick="selectPlan('growth',this)">Growth</button>
+      <button class="pill" onclick="selectPlan('pro',this)">Pro</button>
+    </div>
+  </div>
+
+  <!-- plan cards -->
+  <div class="plan-grid rev" style="transition-delay:.15s">
+
+    <!-- Starter -->
+    <div class="plan-card" id="card-starter">
+      <div class="plan-icon">🌱</div>
+      <div class="plan-name">Starter</div>
+      <div class="plan-tagline">New service providers &amp; side hustles</div>
+      <div class="plan-price-area">
+        <div class="price-row">
+          <span class="price-currency">$</span>
+          <span class="price-amount" id="price-starter">19.99</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <div class="price-total" id="total-starter">Pay $19.99 for 1 month</div>
+        <div class="price-savings" id="save-starter" style="display:none">🎉 You save $0</div>
+      </div>
+      <hr class="plan-divider"/>
+      <ul class="plan-features">
+        <li><span class="ck">✔</span> 1-Page Professional Website</li>
+        <li><span class="ck">✔</span> WhatsApp Business Button</li>
+        <li><span class="ck">✔</span> Mobile Responsive</li>
+        <li><span class="ck">✔</span> .com Domain (included)</li>
+        <li><span class="ck">✔</span> Basic Logo Design</li>
+        <li><span class="ck">✔</span> Google Business Profile</li>
+        <li><span class="no">✘</span> <span style="opacity:.3">Multi-Page Site</span></li>
+        <li><span class="no">✘</span> <span style="opacity:.3">WhatsApp Catalogue</span></li>
+      </ul>
+      <a href="#cta" class="plan-btn plan-btn-ghost">Get Started →</a>
+    </div>
+
+    <!-- Growth -->
+    <div class="plan-card featured" id="card-growth">
+      <div class="plan-icon">🚀</div>
+      <div class="plan-name">Growth</div>
+      <div class="plan-tagline">For serious service businesses</div>
+      <div class="plan-price-area">
+        <div class="price-row">
+          <span class="price-currency">$</span>
+          <span class="price-amount" id="price-growth">39.99</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <div class="price-total" id="total-growth">Pay $39.99 for 1 month</div>
+        <div class="price-savings" id="save-growth" style="display:none">🎉 You save $0</div>
+      </div>
+      <hr class="plan-divider"/>
+      <ul class="plan-features">
+        <li><span class="ck">✔</span> Up to 5-Page Website</li>
+        <li><span class="ck">✔</span> WhatsApp Business Integration</li>
+        <li><span class="ck">✔</span> Mobile + Tablet Responsive</li>
+        <li><span class="ck">✔</span> .com Domain (included)</li>
+        <li><span class="ck">✔</span> Professional Logo + Brand Kit</li>
+        <li><span class="ck">✔</span> Google Business + Maps</li>
+        <li><span class="ck">✔</span> WhatsApp Product Catalogue</li>
+        <li><span class="ck">✔</span> Quote / Booking Form</li>
+        <li><span class="ck">✔</span> Basic SEO Optimisation</li>
+      </ul>
+      <a href="#cta" class="plan-btn plan-btn-solid">Get Started →</a>
+    </div>
+
+    <!-- Pro -->
+    <div class="plan-card" id="card-pro">
+      <div class="plan-icon">👑</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-tagline">Dominate your local market</div>
+      <div class="plan-price-area">
+        <div class="price-row">
+          <span class="price-currency">$</span>
+          <span class="price-amount" id="price-pro">69.99</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <div class="price-total" id="total-pro">Pay $69.99 for 1 month</div>
+        <div class="price-savings" id="save-pro" style="display:none">🎉 You save $0</div>
+      </div>
+      <hr class="plan-divider"/>
+      <ul class="plan-features">
+        <li><span class="ck">✔</span> Unlimited Pages</li>
+        <li><span class="ck">✔</span> Full WhatsApp Business API</li>
+        <li><span class="ck">✔</span> Custom Animations &amp; Design</li>
+        <li><span class="ck">✔</span> .com + .net Domains (included)</li>
+        <li><span class="ck">✔</span> Full Brand Identity Pack</li>
+        <li><span class="ck">✔</span> Advanced SEO + Google Ads</li>
+        <li><span class="ck">✔</span> WhatsApp Auto-Reply Bot</li>
+        <li><span class="ck">✔</span> Online Payment Integration</li>
+        <li><span class="ck">✔</span> Priority 24/7 WhatsApp Support</li>
+      </ul>
+      <a href="#cta" class="plan-btn plan-btn-ghost">Get Started →</a>
+    </div>
+
+  </div>
+
+  <!-- PAYG CALCULATOR -->
+  <div class="payg-widget rev" style="transition-delay:.2s">
+    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.4rem;">
+      <span style="font-size:1.5rem;">🧮</span>
+      <h3 class="payg-title">Pay-As-You-Go Calculator</h3>
+    </div>
+    <p class="payg-sub">Select how many months you want to pay for right now. Your service stays active until those months run out — then top up whenever you're ready.</p>
+
+    <div class="payg-selector" id="month-selector">
+      <button class="month-btn sel" data-m="1" onclick="selectMonths(1,this)">1 mo</button>
+      <button class="month-btn" data-m="2" onclick="selectMonths(2,this)">2 mo</button>
+      <button class="month-btn" data-m="3" onclick="selectMonths(3,this)">3 mo</button>
+      <button class="month-btn" data-m="6" onclick="selectMonths(6,this)">6 mo</button>
+      <button class="month-btn best" data-m="12" onclick="selectMonths(12,this)">12 mo</button>
+      <button class="month-btn" data-m="24" onclick="selectMonths(24,this)">24 mo</button>
+    </div>
+
+    <div class="payg-result">
+      <div class="result-item">
+        <div class="result-value blue" id="calc-months">1</div>
+        <div class="result-label">Months Active</div>
+      </div>
+      <div class="result-item">
+        <div class="result-value" id="calc-total">$19.99</div>
+        <div class="result-label">You Pay Today</div>
+      </div>
+      <div class="result-item">
+        <div class="result-value green" id="calc-save">$0.00</div>
+        <div class="result-label">You Save</div>
+      </div>
+    </div>
+
+    <div class="payg-note">
+      <span class="payg-note-icon">💡</span>
+      <div class="payg-note-text">
+        <strong>How Pay-As-You-Go works:</strong> Your website goes live immediately after payment. When your paid months run out, the site pauses automatically — no surprise charges ever. Just top up to go live again. Pay 12 months upfront and <strong>save 16%</strong> ($200/year vs $239.88 monthly).
+      </div>
+    </div>
+
+    <div class="payg-cta">
+      <div class="months-summary">
+        Currently showing: <strong id="calc-plan-name">Starter Plan</strong> · <strong id="calc-months-summary">1 month</strong> · <strong id="calc-total-summary">$19.99</strong>
+      </div>
+      <a href="#cta" class="btn-blue" id="calc-cta-btn">Start for $19.99 →</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-inner">
+    <div class="how-head rev">
+      <p class="section-tag">// Simple Process</p>
+      <h2 class="section-h">LIVE IN <span class="g">72 HOURS.</span><br>FOR REAL.</h2>
+    </div>
+    <div class="steps-row">
+      <div class="step rev" style="transition-delay:0s">
+        <div class="step-num">1</div>
+        <div class="step-title">Pick Your Plan</div>
+        <div class="step-text">Choose Starter, Growth, or Pro. Select how many months you want to pay for. No commitment beyond what you choose.</div>
+      </div>
+      <div class="step rev" style="transition-delay:.12s">
+        <div class="step-num">2</div>
+        <div class="step-title">We Build It</div>
+        <div class="step-text">Our team designs your site and logo, connects your domain, and sets up your WhatsApp Business profile — all within 72 hours.</div>
+      </div>
+      <div class="step rev" style="transition-delay:.24s">
+        <div class="step-num">3</div>
+        <div class="step-title">Go Live</div>
+        <div class="step-text">Your website is live. Customers find you, tap your WhatsApp button, and message you directly. Leads start flowing immediately.</div>
+      </div>
+      <div class="step rev" style="transition-delay:.36s">
+        <div class="step-num">4</div>
+        <div class="step-title">Top Up &amp; Grow</div>
+        <div class="step-text">When your months run out, just top up. Or pre-pay more months upfront for a bigger discount. You're always in control.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY WHATSAPP -->
+<section id="why">
+  <div class="why-grid">
+    <div class="phone-wrap rev-l">
+      <div class="phone-outer">
+        <div class="phone-screen">
+          <div class="wa-header">
+            <div class="wa-av">SR</div>
+            <div>
+              <div class="wa-name">Sarah's Roofing Co. 🏠</div>
+              <div class="wa-status">● Online — replies instantly</div>
+            </div>
+          </div>
+          <div class="wa-body">
+            <div class="msg msg-in">Hi! Found your site on Google. Do you do roof leak repairs in Austin?<span class="msg-time">2:14 PM</span></div>
+            <div class="msg msg-out">Hey! Yes, we cover all of Austin and surrounds. What's the issue — flat roof or pitched?<span class="msg-time">2:15 PM</span></div>
+            <div class="msg msg-in">Pitched, about 2,000 sq ft. Leaking near the chimney after last week's storm.<span class="msg-time">2:16 PM</span></div>
+            <div class="msg msg-out">Got it. We can do a free inspection tomorrow morning. Our storm repairs start at $350. Want me to send you our availability?<span class="msg-time">2:16 PM</span></div>
+            <div class="msg msg-in">Yes please! Tomorrow at 9am works great 🙏<span class="msg-time">2:17 PM</span></div>
+            <div class="msg msg-out">Confirmed ✅ I'll send you the technician's contact + a reminder at 8am. See you tomorrow!<span class="msg-time">2:17 PM</span></div>
+            <div class="wa-typing">
+              <div class="dt"></div><div class="dt"></div><div class="dt"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-right rev-r">
+      <p class="section-tag">// Real Conversations, Real Jobs</p>
+      <h2 class="section-h">THIS IS HOW<br>AMERICANS<br><span class="g">BOOK SERVICES</span></h2>
+      <p class="section-p">Over 100 million Americans use WhatsApp. But even on iMessage and SMS, a "tap to chat" button on your website converts visitors into paying customers faster than any form or phone call ever will.</p>
+      <div class="benefit-grid">
+        <div class="benefit">
+          <span class="benefit-icon">⚡</span>
+          <div><div class="b-title">Instant Leads — No Forms</div><div class="b-text">Every visitor becomes a direct message. No clunky contact forms, no email delays.</div></div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">🤖</span>
+          <div><div class="b-title">24/7 Auto-Replies</div><div class="b-text">Automated responses capture leads even at midnight. Your business never sleeps.</div></div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">📲</span>
+          <div><div class="b-title">Send Quotes &amp; Invoices</div><div class="b-text">Share estimates, photos, and payment links directly in the chat. Close jobs faster.</div></div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">⭐</span>
+          <div><div class="b-title">Instant Credibility</div><div class="b-text">A pro website with a verified WhatsApp Business profile builds trust before you say a word.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-inner">
+    <div class="stats-head rev">
+      <p class="section-tag">// The Numbers Don't Lie</p>
+      <h2 class="section-h">SERVICE PROS WHO<br><span class="g">SWITCHED</span> — WON</h2>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card rev" style="transition-delay:0s">
+        <div class="stat-big" data-count="80" data-suffix="%">0%</div>
+        <div class="stat-desc">Average Revenue Growth — Year 1</div>
+      </div>
+      <div class="stat-card rev" style="transition-delay:.1s">
+        <div class="stat-big" data-count="3400" data-suffix="%">0%</div>
+        <div class="stat-desc">Increase in Inbound Leads</div>
+      </div>
+      <div class="stat-card rev" style="transition-delay:.2s">
+        <div class="stat-big" data-count="4800" data-suffix="+">0+</div>
+        <div class="stat-desc">US Service Pros Onboarded</div>
+      </div>
+      <div class="stat-card rev" style="transition-delay:.3s">
+        <div class="stat-big" data-count="98" data-suffix="%">0%</div>
+        <div class="stat-desc">Customer Satisfaction Rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testi-head rev">
+    <p class="section-tag">// Real Reviews</p>
+    <h2 class="section-h">PROS ACROSS<br><span class="g">AMERICA</span> GROWING</h2>
+  </div>
+  <div class="testi-track">
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-growth">↑ +124% Revenue in 9 Months</div>
+      <p class="t-text">"I paid for 3 months upfront to test it out. By month two I was fully booked. Paid for the whole year and saved $40. Best business decision I've made — period."</p>
+      <div class="t-author">
+        <div class="t-av" style="background:linear-gradient(135deg,#2563EB,#06B6D4);">MR</div>
+        <div><div class="t-name">Mike Ramirez</div><div class="t-role">HVAC Technician · Houston, TX</div></div>
+      </div>
+    </div>
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-growth">↑ +4× More Calls in 60 Days</div>
+      <p class="t-text">"The Pay-As-You-Go model sold me. I wasn't ready to commit to an annual plan. One month in, I was blown away. Now I've pre-paid 12 months. The WhatsApp button alone is worth it."</p>
+      <div class="t-author">
+        <div class="t-av" style="background:linear-gradient(135deg,#10B981,#059669);">JW</div>
+        <div><div class="t-name">Jessica Wu</div><div class="t-role">House Cleaning Service · Seattle, WA</div></div>
+      </div>
+    </div>
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-growth">↑ +89% Bookings Year 1</div>
+      <p class="t-text">"Used to get jobs from Craigslist. Now 90% of my work comes through my website. Clients WhatsApp me directly, I send them a quote in the same chat, and they pay. It's that smooth."</p>
+      <div class="t-author">
+        <div class="t-av" style="background:linear-gradient(135deg,#F59E0B,#D97706);">DT</div>
+        <div><div class="t-name">Derek Thompson</div><div class="t-role">Landscaping · Phoenix, AZ</div></div>
+      </div>
+    </div>
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-growth">↑ +200% Profit in 12 Months</div>
+      <p class="t-text">"As a solo plumber, I can't answer calls on the job. The WhatsApp auto-reply captures every lead. I check messages on lunch. My revenue doubled in under a year."</p>
+      <div class="t-author">
+        <div class="t-av" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED);">CL</div>
+        <div><div class="t-name">Carlos Lopez</div><div class="t-role">Licensed Plumber · Miami, FL</div></div>
+      </div>
+    </div>
+    <div class="t-card">
+      <div class="t-stars">★★★★★</div>
+      <div class="t-growth">↑ +67% More Reviews &amp; Referrals</div>
+      <p class="t-text">"The logo they designed looks stunning. My customers now take me seriously before I even show up. Paid for 6 months, then went annual. The discount on 12 months is a no-brainer."</p>
+      <div class="t-author">
+        <div class="t-av" style="background:linear-gradient(135deg,#EF4444,#B91C1C);">AP</div>
+        <div><div class="t-name">Ashley Park</div><div class="t-role">Interior Painter · Chicago, IL</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner rev">
+    <p class="section-tag">// No Risk. No Lock-In.</p>
+    <h2 class="section-h">START FOR JUST<br><span class="g">$19.99.</span></h2>
+    <p>One month. That's all it takes to see what a professional website and WhatsApp Business can do for your service business. No annual contract, no hidden fees, no auto-renewal.</p>
+    <div class="cta-buttons">
+      <a href="https://wa.me/12025550000?text=Hi!%20I%20want%20to%20build%20my%20website%20with%20SiteFlow." class="wa-cta" target="_blank">
+        💬 Chat to Us on WhatsApp
+      </a>
+      <a href="#pricing" class="start-cta">
+        ⚡ Start for $19.99 →
+      </a>
+    </div>
+    <p style="font-size:.78rem;color:rgba(255,255,255,.25);margin-top:1.5rem;">No auto-billing. Service pauses when your paid months expire. Top up whenever you're ready.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Site<span class="accent">Flow</span>.</div>
+  <div class="footer-links">
+    <a href="#pricing">Pricing</a>
+    <a href="#how">How It Works</a>
+    <a href="#why">WhatsApp Business</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#cta">Get Started</a>
+  </div>
+  <div class="footer-copy">© 2025 SiteFlow USA · Pay-As-You-Go Web Platform · All prices in USD ($)</div>
+</footer>
+
+<!-- FLOAT -->
+<div class="float-cta">
+  <a href="https://wa.me/12025550000?text=Hi!%20I%20want%20to%20build%20my%20website%20with%20SiteFlow." class="float-wa" target="_blank" title="Chat on WhatsApp">💬</a>
+</div>
+
 <script>
-// original counters, reveal, bars (unchanged)
-const counters = document.querySelectorAll('[data-count]');
-const countObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) {
-      const el = e.target; const target = +el.dataset.count; const suffix = el.dataset.suffix || (target >= 100 ? '+' : '%'); const duration = 1800; const step = target / (duration / 16); let current = 0; const timer = setInterval(() => { current = Math.min(current + step, target); el.textContent = Math.floor(current) + (el.dataset.nosuffix ? '' : suffix); if (current >= target) clearInterval(timer); }, 16); countObserver.unobserve(el); } }); }, { threshold: 0.5 });
-counters.forEach(c => { c.dataset.nosuffix = ''; countObserver.observe(c); });
-document.querySelectorAll('[data-count]').forEach(el => { const v = +el.dataset.count; if (v === 80) el.dataset.suffix = '%'; else if (v === 1200) el.dataset.suffix = '+'; else if (v === 3) el.dataset.suffix = ' Days'; else if (v === 98) el.dataset.suffix = '%'; });
+// ─── PLAN & PRICING DATA ───
+const PLANS = {
+  starter: { base: 19.99, yearly: 200.00, name: 'Starter Plan' },
+  growth:  { base: 39.99, yearly: 400.00, name: 'Growth Plan' },
+  pro:     { base: 69.99, yearly: 700.00, name: 'Pro Plan' }
+};
 
-const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-const revObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } }); }, { threshold: 0.12 });
-revealEls.forEach(el => revObserver.observe(el));
+// discounts by months
+const DISCOUNTS = { 1:0, 2:0, 3:.03, 6:.08, 12:.16, 24:.20 };
 
-const bars = document.querySelectorAll('.bar-fill');
-const barObserver = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('animated'); } }); }, { threshold: 0.3 });
-bars.forEach(b => barObserver.observe(b));
+let currentPlan = 'starter';
+let currentMonths = 1;
 
-window.addEventListener('scroll', () => { document.querySelector('nav').style.padding = window.scrollY > 60 ? '.65rem 2.5rem' : '1rem 2.5rem'; });
-
-// ---------- MODAL logic ----------
-let currentPlan = 'Starter';
-let monthlyPrice = 250;
-let months = 1;
-const modal = document.getElementById('payModal');
-const monthSpan = document.getElementById('monthCount');
-const totalSpan = document.getElementById('totalAmount');
-const planNameH3 = document.getElementById('modalPlanName');
-const whatsappLink = document.getElementById('modalWhatsappLink');
-const freeTrialBtn = document.getElementById('freeTrialBtn');
-
-function openModal(plan, price) {
+function selectPlan(plan, btn) {
   currentPlan = plan;
-  monthlyPrice = price;
-  months = 1;
-  updateModalDisplay();
-  modal.style.display = 'flex';
+  document.querySelectorAll('.toggle-pills .pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  updateCalc();
+  updateCards();
 }
 
-function closeModal() {
-  modal.style.display = 'none';
+function selectMonths(m, btn) {
+  currentMonths = m;
+  document.querySelectorAll('.month-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  updateCalc();
+  updateCards();
 }
 
-function updateModalDisplay() {
-  planNameH3.innerText = currentPlan;
-  monthSpan.innerText = months;
-  const total = monthlyPrice * months;
-  totalSpan.innerText = total;
-  // custom message: "activate my SA 1Biz Plan"
-  let message = `Hi! I want to activate my SA 1Biz Plan. I choose the ${currentPlan} plan, ${months} month(s), total R${total}.`;
-  whatsappLink.href = `https://wa.me/27689124033?text=${encodeURIComponent(message)}`;
-  freeTrialBtn.onclick = () => {
-    let trialMsg = `Hi! I want to activate my SA 1Biz Plan with a FREE TRIAL. I'm interested in the ${currentPlan} plan.`;
-    window.open(`https://wa.me/27689124033?text=${encodeURIComponent(trialMsg)}`, '_blank');
-    closeModal();
-  };
+function fmt(n) { return '$' + n.toFixed(2); }
+
+function updateCalc() {
+  const p = PLANS[currentPlan];
+  const disc = DISCOUNTS[currentMonths] || 0;
+
+  let totalFull, totalPay, saved;
+
+  if (currentMonths === 12) {
+    // annual flat rate
+    totalFull = p.base * 12;
+    totalPay = p.yearly;
+    saved = totalFull - totalPay;
+  } else {
+    totalFull = p.base * currentMonths;
+    totalPay = totalFull * (1 - disc);
+    saved = totalFull - totalPay;
+  }
+
+  document.getElementById('calc-months').textContent = currentMonths;
+  document.getElementById('calc-total').textContent = fmt(totalPay);
+  document.getElementById('calc-save').textContent = fmt(saved);
+  document.getElementById('calc-plan-name').textContent = p.name;
+  document.getElementById('calc-months-summary').textContent = currentMonths + (currentMonths === 1 ? ' month' : ' months');
+  document.getElementById('calc-total-summary').textContent = fmt(totalPay);
+  document.getElementById('calc-cta-btn').textContent = 'Start for ' + fmt(totalPay) + ' →';
 }
 
-document.getElementById('incMonths').addEventListener('click', () => { months++; updateModalDisplay(); });
-document.getElementById('decMonths').addEventListener('click', () => { if (months > 1) months--; updateModalDisplay(); });
+function updateCards() {
+  const plans = ['starter','growth','pro'];
+  const disc = DISCOUNTS[currentMonths] || 0;
 
-// update all package buttons (already inline onclick)
-// also ensure CTA & floating WA have correct number 068 912 4033 (already updated in hrefs)
+  plans.forEach(key => {
+    const p = PLANS[key];
+    let monthly, total, saved;
 
+    if (currentMonths === 12) {
+      total = p.yearly;
+      monthly = p.yearly / 12;
+      saved = (p.base * 12) - p.yearly;
+    } else {
+      total = p.base * currentMonths * (1 - disc);
+      monthly = total / currentMonths;
+      saved = (p.base * currentMonths) - total;
+    }
+
+    document.getElementById('price-'+key).textContent = monthly.toFixed(2);
+
+    const totalEl = document.getElementById('total-'+key);
+    totalEl.textContent = 'Pay ' + fmt(total) + ' for ' + currentMonths + (currentMonths===1?' month':' months');
+
+    const saveEl = document.getElementById('save-'+key);
+    if (saved > 0.01) {
+      saveEl.style.display = 'inline-flex';
+      saveEl.textContent = '🎉 You save ' + fmt(saved);
+    } else {
+      saveEl.style.display = 'none';
+    }
+  });
+}
+
+// ─── INTERSECTION REVEAL ───
+const revEls = document.querySelectorAll('.rev,.rev-l,.rev-r');
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.1 });
+revEls.forEach(el => revObs.observe(el));
+
+// ─── COUNTER ANIMATION ───
+const counterEls = document.querySelectorAll('[data-count]');
+const cntObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = +el.dataset.count;
+    const suffix = el.dataset.suffix || '';
+    const dur = 1800;
+    const step = target / (dur / 16);
+    let cur = 0;
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = Math.floor(cur).toLocaleString() + suffix;
+      if (cur >= target) clearInterval(t);
+    }, 16);
+    cntObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+counterEls.forEach(el => cntObs.observe(el));
+
+// ─── NAV SCROLL ───
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.padding = window.scrollY > 60 ? '.65rem 3rem' : '1rem 3rem';
+});
+
+// init
+updateCalc();
 </script>
-<!-- fill in omitted sections (identical markup, truncated for brevity) 
-     but full nav, hero, why, how, showcase, testimonials, footer remain exactly as original.
-     we keep everything else the same, only changed pricing display and modal -->
 </body>
 </html>
