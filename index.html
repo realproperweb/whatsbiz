@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LaunchPad Studio — We Build Your Website So You Don't Have To</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --sun: #FFB830;
+      --leaf: #3DAA6B;
+      --sky: #2F86C2;
+      --blush: #FF6B6B;
+      --cream: #FFFBF3;
+      --ink: #2D2416;
+      --soft: #F5EED8;
+      --muted: #9A8C74;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--cream);
+      border-bottom: 2px solid var(--soft);
+    }
+
+    .btn-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blush);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 16px 36px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      box-shadow: 0 4px 0 #c94f4f;
+    }
+    .btn-main:hover { transform: translateY(-3px); box-shadow: 0 7px 0 #c94f4f; }
+    .btn-main:active { transform: translateY(1px); box-shadow: 0 2px 0 #c94f4f; }
+
+    .btn-green {
+      background: var(--leaf);
+      box-shadow: 0 4px 0 #2a7d4f;
+    }
+    .btn-green:hover { box-shadow: 0 7px 0 #2a7d4f; }
+    .btn-green:active { box-shadow: 0 2px 0 #2a7d4f; }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--ink);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 50px;
+      border: 2.5px solid var(--ink);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-ghost:hover { background: var(--ink); color: var(--cream); }
+
+    .sticker {
+      display: inline-block;
+      background: var(--sun);
+      color: var(--ink);
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 50px;
+      transform: rotate(-2deg);
+      box-shadow: 2px 3px 0 rgba(0,0,0,0.15);
+    }
+
+    .hero-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .hero-title .accent { color: var(--blush); font-family: 'Caveat', cursive; font-size: 1.15em; }
+    .hero-title .leaf { color: var(--leaf); }
+
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      border: 2px solid var(--soft);
+      padding: 32px 28px;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(45,36,22,0.1); }
+
+    .icon-circle {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .price-box {
+      background: var(--ink);
+      color: var(--cream);
+      border-radius: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+    .price-box::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: rgba(255,184,48,0.1);
+    }
+
+    .tick {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--leaf);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .team-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 28px 20px;
+      text-align: center;
+      border: 2px solid var(--soft);
+      transition: transform 0.25s;
+    }
+    .team-card:hover { transform: translateY(-4px); }
+
+    .bubble {
+      background: var(--soft);
+      border-radius: 20px 20px 20px 4px;
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .wobbly {
+      text-decoration: underline;
+      text-decoration-color: var(--sun);
+      text-decoration-thickness: 4px;
+      text-underline-offset: 5px;
+    }
+
+    .marquee-inner {
+      display: flex;
+      gap: 32px;
+      animation: mq 22s linear infinite;
+      width: max-content;
+    }
+    @keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(45,36,22,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--cream);
+      border-radius: 28px;
+      padding: 44px 40px;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+      transform: scale(0.93);
+      transition: transform 0.3s;
+      border: 3px solid var(--soft);
+    }
+    .overlay.open .modal { transform: scale(1); }
+
+    .modal-x {
+      position: absolute;
+      top: 18px; right: 18px;
+      width: 38px; height: 38px;
+      background: var(--soft);
+      border: none;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-x:hover { background: #e8dfc5; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    section { scroll-margin-top: 68px; }
+
+    .wsp-fab {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      z-index: 150;
+      width: 62px; height: 62px;
+      border-radius: 50%;
+      background: #25D366;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(37,211,102,0.4);
+      transition: transform 0.2s;
+      text-decoration: none;
+    }
+    .wsp-fab:hover { transform: scale(1.1) rotate(-5deg); }
+
+    .step-num {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--sun);
+      color: var(--ink);
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pill-free {
+      display: inline-block;
+      background: var(--leaf);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    details summary { list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] summary span { transform: rotate(45deg); }
+    details summary span { display: inline-block; transition: transform 0.2s; }
+
+    /* PayFast form styling */
+    .payfast-form { width: 100%; }
+    .payfast-form input[type="image"] {
+      width: 100%;
+      max-width: 300px;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+      border-radius: 12px;
+    }
+    .payfast-form input[type="image"]:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    /* Pay Now button styled like btn-main */
+    .pay-now-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--blush);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 18px 36px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
+      box-shadow: 0 4px 0 #c94f4f;
+    }
+    .pay-now-btn:hover { transform: translateY(-3px); box-shadow: 0 7px 0 #c94f4f; }
+    .pay-now-btn:active { transform: translateY(1px); box-shadow: 0 2px 0 #c94f4f; }
+
+    @media (max-width: 640px) {
+      .modal { padding: 36px 22px; }
+      .hero-grid { grid-template-columns: 1fr !important; }
+      .hide-mobile { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div style="max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-family:'Caveat',cursive;font-size:1.9rem;font-weight:700;color:var(--ink);">
+      Launch<span style="color:var(--blush);">Pad</span>
+      <span style="font-size:0.9rem;background:var(--sun);padding:3px 12px;border-radius:20px;color:var(--ink);font-family:'Nunito',sans-serif;font-weight:800;margin-left:4px;">Studio</span>
+    </div>
+    <div class="hide-mobile" style="display:flex;align-items:center;gap:24px;font-weight:700;font-size:0.95rem;">
+      <a href="#how" style="color:var(--muted);text-decoration:none;">How It Works</a>
+      <a href="#price" style="color:var(--muted);text-decoration:none;">Pricing</a>
+      <a href="#team" style="color:var(--muted);text-decoration:none;">About Us</a>
+      <button onclick="openModal('pay')" class="btn-main" style="padding:11px 24px;font-size:0.95rem;">Get Started</button>
+    </div>
+    <button onclick="openModal('pay')" class="btn-main" style="display:none;padding:11px 20px;font-size:0.9rem;" id="nav-mobile-btn">Get Started</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="padding:120px 24px 60px;max-width:1100px;margin:0 auto;">
+  <div class="hero-grid reveal in" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+    <div>
+      <div class="sticker">🎉 Free domain + hosting — 1 whole year!</div>
+      <h1 class="hero-title" style="margin-top:22px;margin-bottom:22px;">
+        We put your<br/>business <span class="accent">online</span> —<br/><span class="leaf">properly.</span>
+      </h1>
+      <p style="font-size:1.12rem;color:var(--muted);line-height:1.75;max-width:460px;margin-bottom:32px;">
+        You run the business. We handle the website, the logo, and all the confusing internet stuff. No tech knowledge needed. <strong style="color:var(--ink);">One simple price and you're done.</strong>
+      </p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;">
+        <button onclick="openModal('pay')" class="btn-main">💳 Yes, I want this! — R3 500</button>
+        <a href="https://wa.me/27689124033?text=Hi%21%20I%27d%20like%20to%20find%20out%20more%20about%20your%20LaunchPad%20web%20design%20package.%20Can%20you%20help%20me%3F%20%F0%9F%99%8F" target="_blank" class="btn-ghost">🤔 Tell me more</a>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:24px;margin-top:36px;padding-top:28px;border-top:2px solid var(--soft);">
+        <div style="text-align:center;">
+          <div style="font-family:'Caveat',cursive;font-size:2.4rem;font-weight:700;color:var(--blush);line-height:1;">R3 500</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:700;">Once off, all included</div>
+        </div>
+        <div style="width:1px;background:var(--soft);"></div>
+        <div style="text-align:center;">
+          <div style="font-family:'Caveat',cursive;font-size:2.4rem;font-weight:700;color:var(--leaf);line-height:1;">1 Year</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:700;">Free hosting &amp; domain</div>
+        </div>
+        <div style="width:1px;background:var(--soft);"></div>
+        <div style="text-align:center;">
+          <div style="font-family:'Caveat',cursive;font-size:2.4rem;font-weight:700;color:var(--sky);line-height:1;">24/7</div>
+          <div style="font-size:0.8rem;color:var(--muted);font-weight:700;">WhatsApp support</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SVG storefront illustration -->
+    <div style="display:flex;justify-content:center;">
+      <svg viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;">
+        <rect width="420" height="380" rx="32" fill="#EAF3FB"/>
+        <ellipse cx="80" cy="70" rx="55" ry="28" fill="#fff" opacity="0.8"/>
+        <ellipse cx="110" cy="58" rx="38" ry="24" fill="#fff" opacity="0.9"/>
+        <ellipse cx="320" cy="50" rx="45" ry="22" fill="#fff" opacity="0.7"/>
+        <ellipse cx="350" cy="40" rx="30" ry="18" fill="#fff" opacity="0.8"/>
+        <circle cx="370" cy="75" r="30" fill="#FFB830" opacity="0.85"/>
+        <ellipse cx="210" cy="355" rx="200" ry="30" fill="#D4EDDA" opacity="0.7"/>
+        <rect x="0" y="340" width="420" height="40" rx="0" fill="#EAF6EF"/>
+        <rect x="90" y="155" width="240" height="195" rx="10" fill="#fff" stroke="#F5EED8" stroke-width="2.5"/>
+        <rect x="68" y="130" width="284" height="40" rx="8" fill="#FF6B6B"/>
+        <rect x="75" y="138" width="270" height="24" rx="5" fill="#ff8585"/>
+        <line x1="110" y1="138" x2="110" y2="162" stroke="#FF6B6B" stroke-width="14" stroke-dasharray="10 10"/>
+        <line x1="150" y1="138" x2="150" y2="162" stroke="#FF6B6B" stroke-width="14" stroke-dasharray="10 10"/>
+        <line x1="190" y1="138" x2="190" y2="162" stroke="#FF6B6B" stroke-width="14" stroke-dasharray="10 10"/>
+        <line x1="230" y1="138" x2="230" y2="162" stroke="#FF6B6B" stroke-width="14" stroke-dasharray="10 10"/>
+        <line x1="270" y1="138" x2="270" y2="162" stroke="#FF6B6B" stroke-width="14" stroke-dasharray="10 10"/>
+        <line x1="310" y1="138" x2="310" y2="162" stroke="#FF6B6B" stroke-width="14" stroke-dasharray="10 10"/>
+        <rect x="118" y="165" width="184" height="54" rx="10" fill="#FFF8E6" stroke="#FFB830" stroke-width="2.5"/>
+        <text x="210" y="188" text-anchor="middle" font-family="Caveat, cursive" font-size="17" font-weight="700" fill="#2D2416">Your Business Name</text>
+        <text x="210" y="208" text-anchor="middle" font-family="Nunito, sans-serif" font-size="11" font-weight="700" fill="#3DAA6B">✓ yourbusiness.co.za</text>
+        <rect x="178" y="258" width="64" height="92" rx="8" fill="#EAF3FB" stroke="#F5EED8" stroke-width="2"/>
+        <circle cx="233" cy="306" r="4" fill="#FFB830"/>
+        <rect x="106" y="228" width="52" height="44" rx="6" fill="#EAF3FB" stroke="#F5EED8" stroke-width="2"/>
+        <line x1="132" y1="228" x2="132" y2="272" stroke="#F5EED8" stroke-width="1.5"/>
+        <line x1="106" y1="250" x2="158" y2="250" stroke="#F5EED8" stroke-width="1.5"/>
+        <rect x="262" y="228" width="52" height="44" rx="6" fill="#EAF3FB" stroke="#F5EED8" stroke-width="2"/>
+        <line x1="288" y1="228" x2="288" y2="272" stroke="#F5EED8" stroke-width="1.5"/>
+        <line x1="262" y1="250" x2="314" y2="250" stroke="#F5EED8" stroke-width="1.5"/>
+        <circle cx="48" cy="300" r="20" fill="#6B3A2A"/>
+        <ellipse cx="48" cy="287" rx="20" ry="10" fill="#3D1F12"/>
+        <path d="M22 350 Q48 318 74 350" fill="#3DAA6B"/>
+        <circle cx="382" cy="298" r="20" fill="#7A4530"/>
+        <rect x="364" y="283" width="36" height="10" rx="5" fill="#1A0D08"/>
+        <path d="M356 350 Q382 316 408 350" fill="#2F86C2"/>
+        <rect x="40" y="68" width="76" height="52" rx="6" fill="#fff" stroke="#F5EED8" stroke-width="2"/>
+        <rect x="42" y="70" width="72" height="38" rx="4" fill="#EAF3FB"/>
+        <rect x="48" y="76" width="36" height="4" rx="2" fill="#FF6B6B" opacity="0.6"/>
+        <rect x="48" y="84" width="52" height="3" rx="2" fill="#F5EED8"/>
+        <rect x="48" y="90" width="44" height="3" rx="2" fill="#F5EED8"/>
+        <rect x="32" y="120" width="92" height="6" rx="3" fill="#F5EED8"/>
+        <rect x="268" y="72" width="96" height="34" rx="14" fill="#EAF6EF" stroke="#3DAA6B" stroke-width="2"/>
+        <circle cx="287" cy="89" r="5" fill="#3DAA6B"/>
+        <text x="318" y="94" text-anchor="middle" font-family="Nunito, sans-serif" font-size="12" font-weight="800" fill="#3DAA6B">You're live!</text>
+        <text x="300" y="145" font-size="18">✨</text>
+        <text x="32" y="155" font-size="16">🌍</text>
+        <text x="370" y="175" font-size="16">📱</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div style="background:var(--ink);padding:14px 0;overflow:hidden;">
+  <div class="marquee-inner">
+    <span style="color:var(--sun);font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">✦ Website Design</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+    <span style="color:#fff;font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">Logo Design</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+    <span style="color:var(--leaf);font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">FREE Domain Name</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+    <span style="color:var(--blush);font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">FREE Hosting — 1 Year</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+    <span style="color:var(--sky);font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">Marketing Graphics</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+    <span style="color:var(--sun);font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">✦ Website Design</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+    <span style="color:#fff;font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">Logo Design</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+    <span style="color:var(--leaf);font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">FREE Domain Name</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+    <span style="color:var(--blush);font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">FREE Hosting — 1 Year</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+    <span style="color:var(--sky);font-family:'Caveat',cursive;font-size:1.3rem;font-weight:700;white-space:nowrap;">Marketing Graphics</span>
+    <span style="color:rgba(255,255,255,0.25);">·</span>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<section id="problem" style="padding:80px 24px;background:var(--soft);">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:52px;" class="reveal">
+      <div class="sticker">😓 The problem</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3rem);font-weight:900;margin-top:18px;line-height:1.2;">
+        Most businesses never<br/><span class="wobbly">make it online.</span> Here's why.
+      </h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;">
+      <div class="card reveal">
+        <div class="icon-circle" style="background:#FFF0F0;">😵</div>
+        <h3 style="font-weight:800;font-size:1.1rem;margin-bottom:10px;">It feels complicated</h3>
+        <p style="color:var(--muted);line-height:1.65;font-size:0.96rem;">You hear words like "hosting", "domain", "SSL" and "WordPress" — and most people just give up before they start.</p>
+      </div>
+      <div class="card reveal" style="transition-delay:0.1s;">
+        <div class="icon-circle" style="background:#FFF8E6;">💸</div>
+        <h3 style="font-weight:800;font-size:1.1rem;margin-bottom:10px;">It costs too much</h3>
+        <p style="color:var(--muted);line-height:1.65;font-size:0.96rem;">A website + logo + domain + hosting can cost <strong style="color:var(--ink);">R6 000 or more</strong> in year one. That kills the dream for most small businesses.</p>
+      </div>
+      <div class="card reveal" style="transition-delay:0.2s;">
+        <div class="icon-circle" style="background:#EAF3FB;">🤷</div>
+        <h3 style="font-weight:800;font-size:1.1rem;margin-bottom:10px;">Who do you trust?</h3>
+        <p style="color:var(--muted);line-height:1.65;font-size:0.96rem;">Some designers ghost you. Some overcharge. It's hard to know who will actually show up and deliver what they promised.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:36px;background:#fff;border-radius:24px;padding:32px 36px;border:2px solid var(--leaf);display:flex;flex-wrap:wrap;gap:20px;align-items:center;" class="reveal">
+      <div style="font-size:2.8rem;">💡</div>
+      <div style="flex:1;min-width:240px;">
+        <div style="font-family:'Caveat',cursive;font-size:1.55rem;font-weight:700;color:var(--leaf);margin-bottom:8px;">That's exactly why we started this.</div>
+        <p style="color:var(--muted);line-height:1.65;font-size:0.97rem;">We're four friends who saw how many great local businesses were staying invisible online — because of price and complexity. So we set up our own servers, kept our prices fair, and now we handle <em>everything</em> for you. <strong style="color:var(--ink);">You just say yes.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="padding:80px 24px;background:var(--cream);">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:52px;" class="reveal">
+      <div class="sticker" style="transform:rotate(1.5deg);">🗺️ Simple steps</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3rem);font-weight:900;margin-top:18px;line-height:1.2;">
+        How it works —<br/><span style="font-family:'Caveat',cursive;color:var(--blush);">no tech skills needed</span>
+      </h2>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <div style="display:flex;gap:22px;align-items:flex-start;padding-bottom:32px;" class="reveal">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+          <div class="step-num">1</div>
+          <div style="width:3px;height:100%;background:var(--soft);margin-top:8px;flex:1;min-height:40px;"></div>
+        </div>
+        <div style="padding-top:8px;">
+          <h3 style="font-weight:800;font-size:1.15rem;margin-bottom:8px;">You WhatsApp us or pay online</h3>
+          <p style="color:var(--muted);line-height:1.65;">That's it for your side. Just tap a button. Our team will reach out within a few hours to get started.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:22px;align-items:flex-start;padding-bottom:32px;" class="reveal">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="step-num">2</div>
+          <div style="width:3px;height:100%;background:var(--soft);margin-top:8px;flex:1;min-height:40px;"></div>
+        </div>
+        <div style="padding-top:8px;">
+          <h3 style="font-weight:800;font-size:1.15rem;margin-bottom:8px;">We ask you a few easy questions</h3>
+          <p style="color:var(--muted);line-height:1.65;">What does your business do? What's the name? Any colours or vibe in mind? No forms — just a friendly chat over WhatsApp.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:22px;align-items:flex-start;padding-bottom:32px;" class="reveal">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="step-num">3</div>
+          <div style="width:3px;height:100%;background:var(--soft);margin-top:8px;flex:1;min-height:40px;"></div>
+        </div>
+        <div style="padding-top:8px;">
+          <h3 style="font-weight:800;font-size:1.15rem;margin-bottom:8px;">We build your website, logo &amp; graphics</h3>
+          <p style="color:var(--muted);line-height:1.65;">Our designers get to work. You'll see drafts, give feedback, and we'll make sure you love it before anything goes live.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:22px;align-items:flex-start;" class="reveal">
+        <div class="step-num" style="background:var(--leaf);color:#fff;">🎉</div>
+        <div style="padding-top:8px;">
+          <h3 style="font-weight:800;font-size:1.15rem;margin-bottom:8px;">Your business goes live — for real!</h3>
+          <p style="color:var(--muted);line-height:1.65;">We set up your domain name and host your site on our own servers — <strong style="color:var(--leaf);">completely free for a full year.</strong> Customers can now find you online. 🚀</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE -->
+<section id="price" style="padding:80px 24px;background:var(--soft);">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:44px;" class="reveal">
+      <div class="sticker" style="transform:rotate(-1deg);background:var(--blush);color:#fff;">💰 One price</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3rem);font-weight:900;margin-top:18px;line-height:1.2;">
+        Everything you need.<br/>No hidden extras. Ever.
+      </h2>
+    </div>
+
+    <div class="price-box reveal" style="max-width:600px;margin:0 auto;">
+      <div style="padding:44px 40px 0;position:relative;z-index:1;">
+        <div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:6px;">
+          <span style="font-family:'Caveat',cursive;font-size:5.5rem;font-weight:700;color:var(--sun);line-height:1;">R3 500</span>
+          <span style="color:rgba(255,251,243,0.4);padding-bottom:18px;font-size:1rem;font-weight:600;">once off</span>
+        </div>
+        <p style="color:rgba(255,251,243,0.5);font-size:0.95rem;margin-bottom:32px;">Pay once. No monthly bills. No nasty surprises.</p>
+
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:36px;">
+          <div style="display:flex;align-items:center;gap:14px;"><div class="tick">✓</div><span style="color:var(--cream);font-size:1rem;font-weight:700;">A proper, beautiful website for your business</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><div class="tick">✓</div><span style="color:var(--cream);font-size:1rem;font-weight:700;">A custom logo you'll be proud of</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><div class="tick">✓</div><span style="color:var(--cream);font-size:1rem;font-weight:700;">Marketing graphics &amp; social media images</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><div class="tick">✓</div><span style="color:var(--cream);font-size:1rem;font-weight:700;"><span class="pill-free">FREE</span> Your own domain name (e.g. yourbusiness.co.za)</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><div class="tick">✓</div><span style="color:var(--cream);font-size:1rem;font-weight:700;"><span class="pill-free">FREE</span> Website hosting on our servers — 1 full year</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><div class="tick">✓</div><span style="color:var(--cream);font-size:1rem;font-weight:700;">Security certificate so your site looks trusted ✓</span></div>
+          <div style="display:flex;align-items:center;gap:14px;"><div class="tick">✓</div><span style="color:var(--cream);font-size:1rem;font-weight:700;">24/7 WhatsApp support throughout the process</span></div>
+        </div>
+      </div>
+      <div style="padding:28px 40px;background:rgba(255,255,255,0.07);border-top:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;gap:14px;position:relative;z-index:1;">
+        <button onclick="openModal('pay')" class="btn-main" style="justify-content:center;font-size:1.1rem;padding:18px 32px;">💳 Pay Now — R3 500</button>
+        <a href="https://wa.me/27689124033?text=Hi%21%20I%27d%20like%20to%20find%20out%20more%20about%20your%20LaunchPad%20web%20design%20package.%20Can%20you%20help%20me%3F%20%F0%9F%99%8F"
+           target="_blank"
+           style="display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:2px solid rgba(255,255,255,0.22);color:var(--cream);font-family:'Nunito',sans-serif;font-weight:700;font-size:1rem;padding:15px;border-radius:50px;cursor:pointer;text-decoration:none;transition:background 0.2s;"
+           onmouseover="this.style.background='rgba(255,255,255,0.09)'" onmouseout="this.style.background='transparent'">
+          💬 I have questions first
+        </a>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:20px;color:var(--muted);font-size:0.88rem;" class="reveal">🔒 Secure online payment via PayFast — trusted by thousands of South African businesses.</p>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" style="padding:80px 24px;background:var(--cream);">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:52px;" class="reveal">
+      <div class="sticker" style="transform:rotate(2deg);background:var(--sky);color:#fff;">👋 Meet us</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3rem);font-weight:900;margin-top:18px;line-height:1.2;">
+        Four friends,<br/><span style="font-family:'Caveat',cursive;color:var(--leaf);">one big dream for you.</span>
+      </h2>
+      <p style="color:var(--muted);max-width:500px;margin:14px auto 0;line-height:1.65;">We're a small, diverse team united by one belief: every local business deserves to be found online — not just the big ones.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;">
+      <div class="team-card reveal">
+        <div style="width:90px;height:90px;border-radius:50%;margin:0 auto 14px;background:#F5EED8;display:flex;align-items:center;justify-content:center;font-size:2.6rem;border:3px solid var(--soft);">👨🏿</div>
+        <div style="font-weight:800;font-size:1.05rem;">Khoza</div>
+        <div style="color:var(--muted);font-size:0.82rem;font-weight:700;margin:5px 0 12px;">Tech &amp; Servers 🖥️</div>
+        <div class="bubble">"I make sure your website is always fast and never goes down."</div>
+      </div>
+      <div class="team-card reveal" style="transition-delay:0.1s;">
+        <div style="width:90px;height:90px;border-radius:50%;margin:0 auto 14px;background:#EAF6EF;display:flex;align-items:center;justify-content:center;font-size:2.6rem;border:3px solid var(--soft);">👩🏿</div>
+        <div style="font-weight:800;font-size:1.05rem;">Naledi</div>
+        <div style="color:var(--muted);font-size:0.82rem;font-weight:700;margin:5px 0 12px;">Design &amp; Logos 🎨</div>
+        <div class="bubble">"Your logo should make you smile every single time you see it."</div>
+      </div>
+      <div class="team-card reveal" style="transition-delay:0.2s;">
+        <div style="width:90px;height:90px;border-radius:50%;margin:0 auto 14px;background:#FFF0F0;display:flex;align-items:center;justify-content:center;font-size:2.6rem;border:3px solid var(--soft);">👩🏼</div>
+        <div style="font-weight:800;font-size:1.05rem;">Sarah</div>
+        <div style="color:var(--muted);font-size:0.82rem;font-weight:700;margin:5px 0 12px;">Websites &amp; UX ✨</div>
+        <div class="bubble">"A great website feels easy to use — that's what I focus on."</div>
+      </div>
+      <div class="team-card reveal" style="transition-delay:0.3s;">
+        <div style="width:90px;height:90px;border-radius:50%;margin:0 auto 14px;background:#EAF3FB;display:flex;align-items:center;justify-content:center;font-size:2.6rem;border:3px solid var(--soft);">👨🏻</div>
+        <div style="font-weight:800;font-size:1.05rem;">Mike</div>
+        <div style="color:var(--muted);font-size:0.82rem;font-weight:700;margin:5px 0 12px;">Marketing &amp; Strategy 📣</div>
+        <div class="bubble">"I help real people actually find your business when they search online."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQs -->
+<section style="padding:80px 24px;background:var(--soft);">
+  <div style="max-width:680px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:44px;" class="reveal">
+      <div class="sticker" style="transform:rotate(-1.5deg);">❓ Questions</div>
+      <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;margin-top:18px;">Things people usually ask us</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;" class="reveal">
+      <details style="background:#fff;border-radius:18px;padding:0;border:2px solid var(--soft);cursor:pointer;overflow:hidden;">
+        <summary style="font-weight:800;font-size:0.98rem;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+          Do I need to know anything about websites or tech?
+          <span style="font-size:1.4rem;color:var(--blush);transition:transform 0.2s;">+</span>
+        </summary>
+        <p style="color:var(--muted);padding:0 24px 20px;line-height:1.65;font-size:0.95rem;">Not at all! We explain everything in plain everyday language. If you can send a WhatsApp message, you can work with us 😊</p>
+      </details>
+      <details style="background:#fff;border-radius:18px;padding:0;border:2px solid var(--soft);cursor:pointer;overflow:hidden;">
+        <summary style="font-weight:800;font-size:0.98rem;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+          What does "free domain and hosting" actually mean?
+          <span style="font-size:1.4rem;color:var(--blush);">+</span>
+        </summary>
+        <p style="color:var(--muted);padding:0 24px 20px;line-height:1.65;font-size:0.95rem;">A "domain" is your website address — like <strong>yourbusiness.co.za</strong>. "Hosting" is where your website lives on the internet. Both normally cost money every year. We pay for both for your first year — completely on us.</p>
+      </details>
+      <details style="background:#fff;border-radius:18px;padding:0;border:2px solid var(--soft);cursor:pointer;overflow:hidden;">
+        <summary style="font-weight:800;font-size:0.98rem;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+          How long does it take to build?
+          <span style="font-size:1.4rem;color:var(--blush);">+</span>
+        </summary>
+        <p style="color:var(--muted);padding:0 24px 20px;line-height:1.65;font-size:0.95rem;">Usually 5–10 working days once we have your information. We'll give you a clear timeline when we start.</p>
+      </details>
+      <details style="background:#fff;border-radius:18px;padding:0;border:2px solid var(--soft);cursor:pointer;overflow:hidden;">
+        <summary style="font-weight:800;font-size:0.98rem;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+          What happens after the free year is over?
+          <span style="font-size:1.4rem;color:var(--blush);">+</span>
+        </summary>
+        <p style="color:var(--muted);padding:0 24px 20px;line-height:1.65;font-size:0.95rem;">After 12 months, you can continue with affordable hosting — we'll give you all the options and pricing well in advance. No nasty surprises and you're never locked in.</p>
+      </details>
+      <details style="background:#fff;border-radius:18px;padding:0;border:2px solid var(--soft);cursor:pointer;overflow:hidden;">
+        <summary style="font-weight:800;font-size:0.98rem;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;">
+          How do I pay?
+          <span style="font-size:1.4rem;color:var(--blush);">+</span>
+        </summary>
+        <p style="color:var(--muted);padding:0 24px 20px;line-height:1.65;font-size:0.95rem;">You can pay securely online via PayFast (card, EFT, instant EFT &amp; more) — just click any "Pay Now" button. You can also WhatsApp us first if you'd prefer to arrange payment directly.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section style="padding:80px 24px 100px;background:var(--cream);">
+  <div style="max-width:680px;margin:0 auto;text-align:center;" class="reveal">
+    <div style="font-size:4rem;margin-bottom:14px;">🚀</div>
+    <h2 style="font-size:clamp(2rem,4.5vw,3.4rem);font-weight:900;line-height:1.15;margin-bottom:18px;">
+      Your customers are looking<br/>for you <span style="font-family:'Caveat',cursive;color:var(--blush);">right now.</span>
+    </h2>
+    <p style="color:var(--muted);font-size:1.08rem;line-height:1.75;margin-bottom:34px;max-width:500px;margin-left:auto;margin-right:auto;">
+      Don't let them find your competitor instead. For <strong style="color:var(--ink);">R3 500 — once off</strong> — you get a real website, a proper logo, and a domain name that's yours. We handle everything.
+    </p>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+      <button onclick="openModal('pay')" class="btn-main" style="font-size:1.1rem;padding:20px 44px;">💳 Let's do this — R3 500</button>
+      <a href="https://wa.me/27689124033?text=Hi%21%20I%27d%20like%20to%20find%20out%20more%20about%20your%20LaunchPad%20web%20design%20package.%20Can%20you%20help%20me%3F%20%F0%9F%99%8F" target="_blank" class="btn-ghost" style="font-size:1rem;padding:18px 32px;">💬 Ask us first</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--ink);padding:36px 24px;text-align:center;">
+  <div style="font-family:'Caveat',cursive;font-size:1.9rem;font-weight:700;color:var(--cream);margin-bottom:8px;">
+    Launch<span style="color:var(--blush);">Pad</span> Studio
+  </div>
+  <p style="color:rgba(255,251,243,0.3);font-size:0.86rem;">© 2025 LaunchPad Studio · Made with ❤️ for every local business in Africa</p>
+  <div style="margin-top:16px;display:flex;gap:20px;justify-content:center;">
+    <button onclick="openModal('pay')" style="background:none;border:none;color:rgba(255,251,243,0.4);cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;" onmouseover="this.style.color='var(--sun)'" onmouseout="this.style.color='rgba(255,251,243,0.4)'">Get Started</button>
+    <a href="https://wa.me/27689124033?text=Hi%21%20I%27d%20like%20to%20find%20out%20more%20about%20your%20LaunchPad%20web%20design%20package.%20Can%20you%20help%20me%3F%20%F0%9F%99%8F" target="_blank" style="background:none;border:none;color:rgba(255,251,243,0.4);cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.88rem;font-weight:700;text-decoration:none;" onmouseover="this.style.color='var(--sun)'" onmouseout="this.style.color='rgba(255,251,243,0.4)'">WhatsApp Us</a>
+  </div>
+</footer>
+
+<!-- FLOATING WhatsApp -->
+<a class="wsp-fab" href="https://wa.me/27689124033?text=Hi%21%20I%27d%20like%20to%20find%20out%20more%20about%20your%20LaunchPad%20web%20design%20package.%20Can%20you%20help%20me%3F%20%F0%9F%99%8F" target="_blank" title="Chat on WhatsApp">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- MODAL: PAY (PayFast) -->
+<div id="modal-pay" class="overlay" onclick="closeOverlay(event,'modal-pay')">
+  <div class="modal" style="max-width:520px;">
+    <button class="modal-x" onclick="closeModal('modal-pay')">✕</button>
+    <div style="text-align:center;margin-bottom:22px;">
+      <div style="font-size:3rem;margin-bottom:8px;">💳</div>
+      <h3 style="font-weight:900;font-size:1.65rem;margin-bottom:8px;">Complete Your Order</h3>
+      <p style="color:var(--muted);font-size:0.95rem;line-height:1.6;">You're getting all of this for <strong style="color:var(--ink);font-size:1.05rem;">R3 500</strong> — paid once, nothing extra:</p>
+    </div>
+    <div style="background:var(--soft);border-radius:16px;padding:18px 20px;margin-bottom:22px;">
+      <div style="display:flex;flex-direction:column;gap:11px;">
+        <div style="display:flex;align-items:center;gap:11px;"><div class="tick" style="width:22px;height:22px;font-size:0.72rem;">✓</div><span style="font-size:0.93rem;font-weight:700;">Professional website design</span></div>
+        <div style="display:flex;align-items:center;gap:11px;"><div class="tick" style="width:22px;height:22px;font-size:0.72rem;">✓</div><span style="font-size:0.93rem;font-weight:700;">Custom logo &amp; marketing graphics</span></div>
+        <div style="display:flex;align-items:center;gap:11px;"><div class="tick" style="width:22px;height:22px;font-size:0.72rem;">✓</div><span style="font-size:0.93rem;font-weight:700;"><span class="pill-free">FREE</span> Domain name — 1 full year</span></div>
+        <div style="display:flex;align-items:center;gap:11px;"><div class="tick" style="width:22px;height:22px;font-size:0.72rem;">✓</div><span style="font-size:0.93rem;font-weight:700;"><span class="pill-free">FREE</span> Website hosting — 1 full year</span></div>
+        <div style="display:flex;align-items:center;gap:11px;"><div class="tick" style="width:22px;height:22px;font-size:0.72rem;">✓</div><span style="font-size:0.93rem;font-weight:700;">24/7 WhatsApp support included</span></div>
+      </div>
+    </div>
+
+    <!-- PayFast Payment Form -->
+    <form name="PayFastPayNowForm" action="https://payment.payfast.io/eng/process" method="post" style="display:flex;flex-direction:column;gap:12px;">
+      <input required type="hidden" name="cmd" value="_paynow">
+      <input required type="hidden" name="receiver" pattern="[0-9]" value="32479493">
+      <input type="hidden" name="return_url" value="https://southafrica.1biz.online/payment_completed.html">
+      <input type="hidden" name="cancel_url" value="https://southafrica.1biz.online">
+      <input required type="hidden" name="amount" value="3500">
+      <input required type="hidden" name="item_name" maxlength="255" value="1bizWebDev">
+      <input type="hidden" name="item_description" maxlength="255" value="1Biz | Web. Hosting and domain name">
+
+      <!-- Styled Pay Now button -->
+      <button type="submit" class="pay-now-btn">
+        🔒 Pay Securely — R3 500
+      </button>
+    </form>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;margin-bottom:4px;">
+      <img src="https://my.payfast.io/images/logo.svg" alt="PayFast" style="height:20px;opacity:0.5;" onerror="this.style.display='none'">
+      <span style="color:var(--muted);font-size:0.78rem;">Secured by PayFast · Card, EFT &amp; more accepted</span>
+    </div>
+
+    <div style="border-top:2px solid var(--soft);margin-top:16px;padding-top:16px;text-align:center;">
+      <p style="color:var(--muted);font-size:0.84rem;margin-bottom:10px;">Prefer to chat first? We're always here 👇</p>
+      <a href="https://wa.me/27689124033?text=Hi%21%20I%27m%20ready%20to%20get%20started%20with%20the%20LaunchPad%20R3500%20package.%20Please%20send%20me%20payment%20details%20%F0%9F%99%8C"
+         target="_blank" class="btn-main btn-green"
+         style="display:flex;justify-content:center;width:100%;font-size:0.97rem;padding:14px;text-decoration:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pay via WhatsApp instead
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal(t) {
+    var id = t === 'pay' ? 'modal-pay' : 'modal-pay'; // both go to pay modal now
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeOverlay(e, id) {
+    if (e.target.id === id) closeModal(id);
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeModal('modal-pay'); }
+  });
+
+  // Mobile nav button
+  if (window.innerWidth < 640) {
+    document.getElementById('nav-mobile-btn').style.display = 'inline-flex';
+  }
+  window.addEventListener('resize', function() {
+    document.getElementById('nav-mobile-btn').style.display = window.innerWidth < 640 ? 'inline-flex' : 'none';
+  });
+
+  // Scroll reveal
+  var revs = document.querySelectorAll('.reveal');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  revs.forEach(function(el) { obs.observe(el); });
+
+  // Responsive hero
+  function fixHero() {
+    var g = document.querySelector('.hero-grid');
+    if (g) g.style.gridTemplateColumns = window.innerWidth < 720 ? '1fr' : '1fr 1fr';
+  }
+  fixHero();
+  window.addEventListener('resize', fixHero);
+</script>
+
+<!-- Default Statcounter code for SA Web - Name & Hosting |
+FB https://southafrica.1biz.online/connect.html -->
+<script type="text/javascript">
+var sc_project=13213402; 
+var sc_invisible=1; 
+var sc_security="25815372"; 
+</script>
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
+<noscript><div class="statcounter"><a title="Web Analytics"
+href="https://statcounter.com/" target="_blank"><img
+class="statcounter"
+src="https://c.statcounter.com/13213402/0/25815372/1/"
+alt="Web Analytics"
+referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+<!-- End of Statcounter Code -->
+
+</body>
+</html>
